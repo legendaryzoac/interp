@@ -27,10 +27,7 @@ jobs:
       - run: npm ci
       - run: npm run build -w web
         env:
-          # Model weights are served from the Hugging Face Hub, not S3.
-          # TODO: replace with the real HF repo base URL once it exists,
-          # e.g. https://huggingface.co/<user>/interp-gpt2/resolve/main
-          VITE_MODEL_BASE_URL: https://huggingface.co/PLACEHOLDER/resolve/main
+          VITE_MODEL_BASE_URL: https://huggingface.co/legendaryzoac/interp-gpt2-onnx/resolve/main
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
