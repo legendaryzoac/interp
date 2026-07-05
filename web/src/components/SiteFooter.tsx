@@ -15,23 +15,9 @@ export default function SiteFooter({ note }: Props) {
         <div className="mt-1 opacity-60">zwithers99@gmail.com · Denver, CO</div>
         {note && <div className="text-accent-dim mt-1 opacity-80">{note}</div>}
       </div>
-      <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
+      <div className="flex gap-6">
         <a
-          href="https://zackwithers.com"
-          className="text-muted hover:text-accent text-sm transition-colors"
-        >
-          zackwithers.com
-        </a>
-        <a
-          href="https://playground.zackwithers.com"
-          target="_blank"
-          rel="noopener"
-          className="text-muted hover:text-accent text-sm transition-colors"
-        >
-          Playground ↗
-        </a>
-        <a
-          href="https://github.com/legendaryzoac/interp"
+          href="https://github.com/legendaryzoac"
           target="_blank"
           rel="noopener"
           className="text-muted hover:text-accent flex items-center gap-1.5 text-sm transition-colors"
