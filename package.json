@@ -1,0 +1,8 @@
+{
+  "name": "interp",
+  "private": true,
+  "workspaces": [
+    "web",
+    "infra"
+  ]
+}

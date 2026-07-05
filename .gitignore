@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Model artifacts live outside the repo (D:/dev/interp-artifacts) or on HF Hub —
+# never in git. Local scratch copies:
+artifacts/
+*.onnx
+
+# Web (later milestones)
+node_modules/
+dist/
+
+# Infra (later milestones)
+cdk.out/
+
+# Secrets / local env
+.env
+.env.*

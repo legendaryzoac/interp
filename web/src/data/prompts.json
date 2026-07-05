@@ -1,0 +1,21 @@
+{
+  "description": "Fixed prompt set for ONNX-vs-TransformerLens parity validation and the precomputed example gallery. Do not casually edit: parity history stays comparable only if these stay stable.",
+  "prompts": [
+    {"id": "pangram", "text": "The quick brown fox jumps over the lazy dog."},
+    {"id": "ioi", "text": "When Mary and John went to the store, John gave a drink to"},
+    {"id": "ioi_flipped", "text": "When Mary and John went to the store, Mary gave a drink to"},
+    {"id": "induction", "text": "Mr. Dursley of Grindelwald Manor said Mr. Dursley of Grindelwald"},
+    {"id": "repetition", "text": "one two three four one two three four one two three"},
+    {"id": "code", "text": "def fibonacci(n):\n    if n <= 1:\n        return n\n    return fibonacci(n - 1) +"},
+    {"id": "quote", "text": "To be, or not to be, that is the"},
+    {"id": "factual", "text": "The Eiffel Tower is located in the city of"},
+    {"id": "numbers", "text": "2, 4, 6, 8, 10, 12,"},
+    {"id": "newlines", "text": "Dear Sir,\n\nI am writing to inform you that the"},
+    {"id": "unicode", "text": "The café near the piñata shop sells crème brûlée for €7."},
+    {"id": "long_context", "text": "In the early morning hours, long before the first commuters reached the station, a lone maintenance worker walked the length of the empty platform, checking each bench and signboard, pausing now and then to note something on a clipboard, entirely unaware that the"},
+    {"id": "single_token", "text": "Hello"},
+    {"id": "punctuation", "text": "Wait -- what?! (No; really: \"why?\")"},
+    {"id": "list_completion", "text": "Colorado ski resorts include Vail, Breckenridge, Keystone,"},
+    {"id": "contrast_pair_base", "text": "The scientist explained the results clearly and the audience"}
+  ]
+}

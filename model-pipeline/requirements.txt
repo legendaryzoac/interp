@@ -1,0 +1,10 @@
+# Install with CPU-only torch (GPU not needed for export/validation):
+#   uv pip install --index-url https://download.pytorch.org/whl/cpu torch
+#   uv pip install -r requirements.txt
+torch>=2.6
+transformers>=4.46
+transformer-lens>=2.11
+onnx>=1.16
+onnxruntime>=1.19
+onnxconverter-common>=1.14
+numpy

@@ -1,0 +1,46 @@
+{
+  "model": "gpt2 (124M), segmented export",
+  "reference": "transformer_lens from_pretrained_no_processing",
+  "n_prompts": 16,
+  "results": {
+    "fp32": {
+      "max_attention_pattern_diff": 8.463859558105469e-06,
+      "max_final_logit_diff": 0.00048828125,
+      "logit_lens_top1_agreement_pct": 100.0,
+      "logit_lens_top5_agreement_pct": 100.0,
+      "cells_compared": 3156
+    },
+    "fp16": {
+      "max_attention_pattern_diff": 0.012453585863113403,
+      "max_final_logit_diff": 0.45306396484375,
+      "logit_lens_top1_agreement_pct": 99.90494296577947,
+      "logit_lens_top5_agreement_pct": 99.33460076045627,
+      "cells_compared": 3156
+    },
+    "int8": {
+      "max_attention_pattern_diff": 0.02493053674697876,
+      "max_final_logit_diff": 3.50537109375,
+      "logit_lens_top1_agreement_pct": 98.41571609632446,
+      "logit_lens_top5_agreement_pct": 90.96958174904942,
+      "cells_compared": 3156
+    }
+  },
+  "gates": {
+    "fp32": {
+      "max_pattern_diff": 0.0001,
+      "min_top1_pct": 100.0,
+      "min_top5_pct": null
+    },
+    "fp16": {
+      "max_pattern_diff": 0.02,
+      "min_top1_pct": 99.0,
+      "min_top5_pct": null
+    },
+    "int8": {
+      "max_pattern_diff": 0.05,
+      "min_top1_pct": 97.0,
+      "min_top5_pct": 90.0
+    }
+  },
+  "failures": []
+}
