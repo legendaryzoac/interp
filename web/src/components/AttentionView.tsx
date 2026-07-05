@@ -28,7 +28,7 @@ export default function AttentionView({ view }: { view: ResultView }) {
         <div className="text-muted mb-2 font-mono text-xs">
           layer ↓ · head → (click any cell)
         </div>
-        <div className="flex gap-1">
+        <div className="flex gap-1 overflow-x-auto pb-2">
           {/* layer index gutter */}
           <div className="flex flex-col gap-1 pt-[1.15rem]">
             {Array.from({ length: N_LAYERS }, (_, l) => (

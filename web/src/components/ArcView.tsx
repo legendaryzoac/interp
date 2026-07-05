@@ -54,7 +54,7 @@ export default function ArcView({
         <span className="text-accent">{head}</span> — arc = token attends to
         earlier token
       </div>
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto pb-2">
         <svg
           width={width}
           height={height}

@@ -26,7 +26,7 @@ export default function LogitLensView({ view }: { view: ResultView }) {
         actual prediction
       </div>
 
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto pb-2">
         <div className="inline-flex flex-col gap-[3px]">
           {/* column header: input tokens */}
           <div className="flex gap-[3px] pl-10">

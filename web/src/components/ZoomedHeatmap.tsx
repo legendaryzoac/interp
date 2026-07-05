@@ -70,7 +70,7 @@ export default function ZoomedHeatmap({
         <span className="text-accent">{head}</span> — rows attend to columns
       </div>
 
-      <div className="flex gap-2">
+      <div className="flex gap-2 overflow-x-auto pb-2">
         {/* Row labels (query tokens) */}
         <div className="flex flex-col justify-start pt-0" style={{ marginTop: 0 }}>
           {tokens.slice(0, seq).map((t, i) => (

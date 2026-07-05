@@ -5,6 +5,7 @@ import TokenStrip from './components/TokenStrip'
 import DownloadOverlay from './components/DownloadOverlay'
 import AttentionView from './components/AttentionView'
 import LogitLensView from './components/LogitLensView'
+import SiteFooter from './components/SiteFooter'
 import {
   detectBackend,
   Runner,
@@ -95,7 +96,7 @@ export default function App() {
   const currentTokens = view?.tokens ?? tokenize(prompt).map((t) => t.display)
 
   return (
-    <div className="min-h-screen pb-24">
+    <div className="min-h-screen pb-4">
       <SiteNav badge={backend?.label} />
 
       <main className="mx-auto max-w-6xl px-5 pt-24 sm:px-8">
@@ -227,6 +228,8 @@ export default function App() {
             enter a prompt and hit Run to load the model and see its internals
           </div>
         )}
+
+        <SiteFooter note="GPT-2 small runs entirely client-side via ONNX Runtime Web · 124M parameters" />
       </main>
     </div>
   )
