@@ -102,6 +102,9 @@ export default function App() {
       <main className="mx-auto max-w-6xl px-5 pt-24 sm:px-8">
         {/* Hero */}
         <header className="mb-8">
+          <p className="text-accent mb-2 font-mono text-xs tracking-widest uppercase">
+            // AI Safety Lab
+          </p>
           <h1 className="font-display text-fg text-3xl font-bold tracking-tight sm:text-4xl">
             GPT-2, opened up
           </h1>
