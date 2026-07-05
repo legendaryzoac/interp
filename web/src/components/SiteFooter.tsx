@@ -31,14 +31,6 @@ export default function SiteFooter({ note }: Props) {
           Playground ↗
         </a>
         <a
-          href="https://fit.zackwithers.com"
-          target="_blank"
-          rel="noopener"
-          className="text-muted hover:text-accent text-sm transition-colors"
-        >
-          fit ↗
-        </a>
-        <a
           href="https://github.com/legendaryzoac/interp"
           target="_blank"
           rel="noopener"
