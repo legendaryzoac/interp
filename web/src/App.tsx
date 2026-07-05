@@ -5,18 +5,21 @@ import TokenStrip from './components/TokenStrip'
 import DownloadOverlay from './components/DownloadOverlay'
 import AttentionView from './components/AttentionView'
 import LogitLensView from './components/LogitLensView'
+import CompareView from './components/CompareView'
+import CircuitsView from './components/CircuitsView'
 import SiteFooter from './components/SiteFooter'
 import {
   detectBackend,
   Runner,
   type BackendChoice,
   type DownloadProgress,
+  type RunResult,
 } from './lib/runner'
 import { tokenize } from './lib/tokenizer'
 import { viewFromRun, viewFromGallery, type ResultView } from './lib/viewModel'
 import { loadGallery, type Gallery } from './lib/gallery'
 
-type Tab = 'attention' | 'lens'
+type Tab = 'attention' | 'lens' | 'compare' | 'circuits'
 type ModelState = 'idle' | 'loading' | 'ready' | 'error'
 
 const DEFAULT_PROMPT =
@@ -79,6 +82,16 @@ export default function App() {
       setRunning(false)
     }
   }, [ensureRunner, prompt])
+
+  // Live run helper the Compare tab drives (base + base+suffix forwards).
+  // Ensures the model is loaded, then runs — sessions stay private to Runner.
+  const runTokens = useCallback(
+    async (ids: number[]): Promise<RunResult> => {
+      const runner = await ensureRunner()
+      return runner.run(ids)
+    },
+    [ensureRunner],
+  )
 
   const showGalleryExample = useCallback(
     (idx: number) => {
@@ -186,9 +199,9 @@ export default function App() {
         )}
 
         {/* Results */}
-        {view && (
+        {(view || tab === 'compare' || tab === 'circuits') && (
           <section className="mt-8">
-            <div className="mb-4 flex items-center gap-2">
+            <div className="mb-4 flex flex-wrap items-center gap-2">
               <button
                 onClick={() => setTab('attention')}
                 className={`font-display rounded-lg px-4 py-1.5 text-sm font-medium transition-colors ${
@@ -209,7 +222,29 @@ export default function App() {
               >
                 Logit lens
               </button>
-              {view.source === 'precomputed' && (
+              <button
+                onClick={() => setTab('compare')}
+                className={`font-display rounded-lg px-4 py-1.5 text-sm font-medium transition-colors ${
+                  tab === 'compare'
+                    ? 'bg-accent text-site'
+                    : 'border-line text-muted hover:text-fg border'
+                }`}
+              >
+                Compare
+              </button>
+              <button
+                onClick={() => setTab('circuits')}
+                className={`font-display rounded-lg px-4 py-1.5 text-sm font-medium transition-colors ${
+                  tab === 'circuits'
+                    ? 'bg-accent text-site'
+                    : 'border-line text-muted hover:text-fg border'
+                }`}
+              >
+                Circuits
+              </button>
+              {view?.source === 'precomputed' &&
+                tab !== 'compare' &&
+                tab !== 'circuits' && (
                 <span className="border-accent-dim text-accent ml-1 rounded-full border px-2 py-0.5 font-mono text-[0.62rem]">
                   precomputed
                 </span>
@@ -217,7 +252,22 @@ export default function App() {
             </div>
 
             <div className="border-line bg-panel/40 rounded-xl border p-4 sm:p-6">
-              {tab === 'attention' ? (
+              {tab === 'compare' ? (
+                <CompareView
+                  basePrompt={prompt}
+                  runTokens={runTokens}
+                  modelReady={modelState === 'ready'}
+                />
+              ) : tab === 'circuits' ? (
+                <CircuitsView
+                  getRunner={ensureRunner}
+                  modelReady={modelState === 'ready'}
+                />
+              ) : !view ? (
+                <div className="text-muted py-6 text-center font-mono text-sm">
+                  run a prompt to populate this view
+                </div>
+              ) : tab === 'attention' ? (
                 <AttentionView view={view} />
               ) : (
                 <LogitLensView view={view} />
@@ -226,11 +276,28 @@ export default function App() {
           </section>
         )}
 
-        {!view && modelState !== 'loading' && (
-          <div className="text-muted mt-10 text-center font-mono text-sm">
-            enter a prompt and hit Run to load the model and see its internals
-          </div>
-        )}
+        {!view &&
+          tab !== 'compare' &&
+          tab !== 'circuits' &&
+          modelState !== 'loading' && (
+            <div className="text-muted mt-10 text-center font-mono text-sm">
+              enter a prompt and hit Run to load the model and see its internals —
+              or explore{' '}
+              <button
+                onClick={() => setTab('compare')}
+                className="text-accent underline decoration-dotted underline-offset-2 hover:no-underline"
+              >
+                Compare
+              </button>{' '}
+              /{' '}
+              <button
+                onClick={() => setTab('circuits')}
+                className="text-accent underline decoration-dotted underline-offset-2 hover:no-underline"
+              >
+                Circuits
+              </button>
+            </div>
+          )}
 
         <SiteFooter note="GPT-2 small runs entirely client-side via ONNX Runtime Web · 124M parameters" />
       </main>

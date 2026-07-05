@@ -5,8 +5,8 @@
  */
 export default function SiteNav({ badge }: { badge?: string }) {
   return (
-    <nav className="bg-site/85 border-line fixed inset-x-0 top-0 z-50 flex h-[60px] items-center justify-between border-b px-5 backdrop-blur-md sm:px-10">
-      <div className="flex items-baseline gap-2.5">
+    <nav className="bg-site/85 border-line fixed inset-x-0 top-0 z-50 flex h-[60px] items-center justify-between gap-x-3 border-b px-5 backdrop-blur-md sm:px-10">
+      <div className="flex min-w-0 shrink items-baseline gap-2.5">
         <a
           href="https://zackwithers.com"
           className="text-accent font-mono text-sm tracking-wider whitespace-nowrap"
@@ -14,13 +14,13 @@ export default function SiteNav({ badge }: { badge?: string }) {
           zw ~
         </a>
         <span className="text-muted hidden font-mono text-xs min-[480px]:inline">/</span>
-        <span className="text-accent hidden font-mono text-xs whitespace-nowrap min-[480px]:inline">
+        <span className="text-accent hidden truncate font-mono text-xs min-[480px]:inline">
           interp
         </span>
       </div>
-      <div className="flex items-center gap-4 sm:gap-6">
+      <div className="flex shrink-0 items-center gap-3 sm:gap-4 md:gap-6">
         {badge && (
-          <span className="border-line bg-panel text-muted hidden rounded-full border px-3 py-1 font-mono text-[0.7rem] tracking-wide min-[560px]:inline">
+          <span className="border-line bg-panel text-muted hidden rounded-full border px-3 py-1 font-mono text-[0.7rem] tracking-wide whitespace-nowrap md:inline">
             {badge}
           </span>
         )}
@@ -28,7 +28,7 @@ export default function SiteNav({ badge }: { badge?: string }) {
           href="https://playground.zackwithers.com"
           target="_blank"
           rel="noopener"
-          className="font-display text-muted hover:text-fg hidden text-sm font-medium transition-colors sm:block"
+          className="font-display text-muted hover:text-fg hidden text-sm font-medium whitespace-nowrap transition-colors md:block"
         >
           Playground ↗
         </a>
@@ -36,7 +36,7 @@ export default function SiteNav({ badge }: { badge?: string }) {
           href="https://github.com/legendaryzoac/interp"
           target="_blank"
           rel="noopener"
-          className="font-display text-muted hover:text-fg hidden text-sm font-medium transition-colors sm:block"
+          className="font-display text-muted hover:text-fg hidden text-sm font-medium whitespace-nowrap transition-colors sm:block"
         >
           GitHub ↗
         </a>

@@ -389,6 +389,94 @@ export class Runner {
 
     return { seq, patterns, lensLogits, resids }
   }
+
+  /**
+   * Embed-only forward: returns the residual stream ENTERING block 0
+   * (token + position embeddings), flat [1, seq, 768]. This is the piece
+   * `run()` never surfaced — its `resids` are per-block *outputs*, i.e. the
+   * input to block L+1, so the block-0 input had no home. Activation patching
+   * needs the residual entering *every* block, and block 0's entry is exactly
+   * this. (Additive: run() is untouched.)
+   */
+  async embed(tokenIds: number[]): Promise<Float32Array> {
+    const seq = tokenIds.length
+    if (seq === 0) throw new Error('empty token sequence')
+    const ids = BigInt64Array.from(tokenIds, (t) => BigInt(t))
+    const inputIds = new ort.Tensor('int64', ids, [1, seq])
+    const out = await this.sessions.embed.run({ input_ids: inputIds })
+    return (out.resid as ort.Tensor).data as Float32Array
+  }
+
+  /**
+   * The residual stream ENTERING each of the 12 blocks, flat [1,seq,768] each:
+   *   entering[0] = embed output
+   *   entering[L] = output of block L-1  (for L >= 1)
+   * This is the natural coordinate for activation patching: to patch "the
+   * residual entering block L at position p" you overwrite entering[L] and
+   * continue the forward from block L with `continueFromBlock`.
+   */
+  async residualsEnteringBlocks(tokenIds: number[]): Promise<Float32Array[]> {
+    const seq = tokenIds.length
+    if (seq === 0) throw new Error('empty token sequence')
+    const embedResid = await this.embed(tokenIds)
+    const entering: Float32Array[] = [embedResid]
+    let residTensor: ort.Tensor = new ort.Tensor('float32', embedResid, [
+      1,
+      seq,
+      D_MODEL,
+    ])
+    // Run blocks 0..10; each output is the input to the next block. Block 11's
+    // output is the final residual (fed to unembed), not an entry — so we stop
+    // collecting after 12 entries (embed + outputs of blocks 0..10).
+    for (let i = 0; i < N_LAYERS - 1; i++) {
+      const name = `block_${String(i).padStart(2, '0')}`
+      const out = await this.sessions[name].run({ resid: residTensor })
+      const residOut = out.resid_out as ort.Tensor
+      entering.push(residOut.data as Float32Array)
+      residTensor = residOut
+    }
+    return entering
+  }
+
+  /**
+   * Continue a forward from a residual ENTERING block `startBlock`: run blocks
+   * startBlock..11, unembed, and return the final next-token logits row
+   * (Float32Array of length VOCAB_SIZE) at position `seq - 1`. Used by
+   * activation patching — feed a (patched) residual and read the recovered
+   * logits. `resid` is a flat [1, seq, 768] buffer.
+   *
+   * Returning only the last row keeps the patching sweep light: the caller
+   * measures a logit-diff at the final position over ~12*seq forwards.
+   */
+  async continueFromBlock(
+    resid: Float32Array,
+    startBlock: number,
+    seq: number,
+  ): Promise<Float32Array> {
+    if (startBlock < 0 || startBlock >= N_LAYERS)
+      throw new Error(`startBlock out of range: ${startBlock}`)
+    if (resid.length !== seq * D_MODEL)
+      throw new Error(
+        `resid length ${resid.length} != seq*${D_MODEL} (${seq * D_MODEL})`,
+      )
+    let residTensor: ort.Tensor = new ort.Tensor('float32', resid, [
+      1,
+      seq,
+      D_MODEL,
+    ])
+    for (let i = startBlock; i < N_LAYERS; i++) {
+      const name = `block_${String(i).padStart(2, '0')}`
+      const out = await this.sessions[name].run({ resid: residTensor })
+      residTensor = out.resid_out as ort.Tensor
+    }
+    const logitsTensor = (
+      await this.sessions.unembed.run({ resid: residTensor })
+    ).logits as ort.Tensor
+    const all = logitsTensor.data as Float32Array
+    // Slice out the final position's vocab row.
+    const base = (seq - 1) * VOCAB_SIZE
+    return all.slice(base, base + VOCAB_SIZE)
+  }
 }
 
 /**
