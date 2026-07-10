@@ -1,0 +1,1837 @@
+{
+  "story": "S5 - Haiku auto-labeling",
+  "generated": "2026-07-10",
+  "route": "Amazon Bedrock (bedrock-runtime converse) via ambient AWS creds (IAM user zachary)",
+  "region": "us-east-1",
+  "model_id": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
+  "model_name": "Claude Haiku 4.5 (us cross-region inference profile)",
+  "temperature": 0.0,
+  "n_curated": 384,
+  "n_labeled": 384,
+  "n_null_label": 0,
+  "confidence_distribution": {
+    "high": 176,
+    "medium": 128,
+    "low": 80
+  },
+  "api_calls": 384,
+  "retried_features": 0,
+  "token_usage": {
+    "input": 343736,
+    "output": 10614,
+    "total": 354350
+  },
+  "pricing_usd_per_mtok": {
+    "input": 1.0,
+    "output": 5.0
+  },
+  "estimated_cost_usd": 0.3968,
+  "verification": {
+    "n_dashboard": 384,
+    "n_missing_confidence": 0,
+    "missing_confidence_ids": [],
+    "n_null_label": 0,
+    "null_label_ids": [],
+    "n_chunk_features": 384,
+    "sample_size": 20,
+    "sample_mismatches": [],
+    "confidence_distribution": {
+      "high": 176,
+      "medium": 128,
+      "low": 80
+    }
+  },
+  "content_hash_flag": "The dashboards' content_hash (manifest.json content_hash=36b59552633dccb3, produced in S3 over the encoder/decoder artifacts; the S4 dashboards are not yet hash-stamped) is now STALE for the dashboard JSONs: this story rewrote features_0000.json, features_0001.json and index.json to add label + label_confidence. S6 (publish) must re-stamp the dashboard payload's content_hash when it ships these files. NOT fixed here (model-pipeline's stamper is out of this story's scope).",
+  "spot_checks": [
+    {
+      "id": 18,
+      "label": "Closing bracket or end of citation/reference",
+      "confidence": "high",
+      "selection_reason": "diversity_band4",
+      "freq": 0.00119393,
+      "examples": [
+        {
+          "act": 68.4,
+          "text": ", the BAR was issued to soldiers of various heights.[«48»]\\n\\nAs originally conceived, US Army tactical doctrine called"
+        },
+        {
+          "act": 68.2,
+          "text": "asaki; causing the Japanese to surrender on September 2, ending World War II.[«173»"
+        },
+        {
+          "act": 66.7,
+          "text": " forests and the rolling hills of the Piedmont.[«233»] The Appalachian Mountains divide the eastern seaboard from the"
+        }
+      ]
+    },
+    {
+      "id": 41,
+      "label": "Forward slash separators in lists and ratios",
+      "confidence": "high",
+      "selection_reason": "diversity_band5",
+      "freq": 0.00195488,
+      "examples": [
+        {
+          "act": 17.4,
+          "text": "onogatari II Nekketsu-hen BD/«DVD» CM2 by pKjd\\n\\nSeven-11"
+        },
+        {
+          "act": 15.3,
+          "text": "<|endoftext|> RB/«LB», UCLA\\n\\nCoach of the Year: Todd Graham, Arizona State\\n\\n"
+        },
+        {
+          "act": 15.1,
+          "text": " Orchard, Randy Gregory, Markus Golden, Eli Harold as the OLB/«DE»"
+        }
+      ]
+    },
+    {
+      "id": 87,
+      "label": "Image caption or photo credit markers",
+      "confidence": "high",
+      "selection_reason": "diversity_band1",
+      "freq": 6.5496e-05,
+      "examples": [
+        {
+          "act": 82.6,
+          "text": "; Suspect Has Died\\n\\nEnlarge this image toggle« caption» DAVID MANNING/Reuters /Landov DAVID MAN"
+        },
+        {
+          "act": 79.1,
+          "text": "Burning Coverage Conundrum\\n\\nEnlarge this image toggle« caption» Joe Raedle/Getty Images Joe Raedle/"
+        },
+        {
+          "act": 79.0,
+          "text": " Which Might Please Restaurant Workers\\n\\nEnlarge this image toggle« caption» Courtesy of Packhouse Meats Courtesy of Packhouse Meats"
+        }
+      ]
+    },
+    {
+      "id": 5710,
+      "label": "Arabic and Persian script characters",
+      "confidence": "high",
+      "selection_reason": "diversity_band2",
+      "freq": 0.000224486,
+      "examples": [
+        {
+          "act": 38.3,
+          "text": "َ‹ر›‹َ›‹ب›‹ي›‹ْ› - Arabic ��‹ا›«ر»‹س›‹�›� - Persian ����‹ت›‹و› -"
+        },
+        {
+          "act": 35.7,
+          "text": " Crescent Idlib�� in Arabic: ��‹ال›‹ه›«ل»‹ال›‹ ال›‹�›�‹�›‹�›‹م›‹ر›‹ا�›�‹ل›‹ب›"
+        },
+        {
+          "act": 35.6,
+          "text": " Arabic:‹ م›‹ع›‹�›�‹و›‹ب› ‹ل›‹و›«ن»‹�›�‹ا�›�‎ (January 24, 1956 – June"
+        }
+      ]
+    },
+    {
+      "id": 14498,
+      "label": "Hyphenated compound adjectives or adjectival suffixes",
+      "confidence": "high",
+      "selection_reason": "diversity_band5",
+      "freq": 0.00346879,
+      "examples": [
+        {
+          "act": 20.0,
+          "text": "<|endoftext|> on March 8, one of the sunny,« snow»-free days in early spring, and had no trouble finding the"
+        },
+        {
+          "act": 19.6,
+          "text": "<|endoftext|> support producers still making challenging,« sub»-low beats – was a top seller in Blackmarket Records, one of the"
+        },
+        {
+          "act": 18.5,
+          "text": " it seemed. Williams who was noted for her sympathetic,« eyewitness» Letters Written in France had just published a poem in praise of"
+        }
+      ]
+    },
+    {
+      "id": 19084,
+      "label": "Digits in scientific notation or decimal numbers",
+      "confidence": "high",
+      "selection_reason": "diversity_band4",
+      "freq": 0.00137342,
+      "examples": [
+        {
+          "act": 33.2,
+          "text": "‹514›‹54›365e+00, -2.‹317›«43»276e+00, 9.‹416›‹14›308e-"
+        },
+        {
+          "act": 33.1,
+          "text": "‹75›‹87›‹16›79e+06 -7.‹68›«40»‹79›51e+06 3.‹05›‹26›‹70›70e"
+        },
+        {
+          "act": 33.0,
+          "text": "‹540›‹312›39] [ 1898.‹610›‹79›121] [ 126.‹23›«77»‹68›85] [ -223.‹4›"
+        }
+      ]
+    },
+    {
+      "id": 11242,
+      "label": "Transition words and discourse markers",
+      "confidence": "medium",
+      "selection_reason": "high_frequency",
+      "freq": 0.0233486,
+      "examples": [
+        {
+          "act": 6.6,
+          "text": " specific domain‐related content. (For discussion of this possibility relevant to openness,« see»"
+        },
+        {
+          "act": 6.1,
+          "text": " and not to engage in a debate about the specific psychological mechanisms underlying those interactions.« However»‹,› on a"
+        },
+        {
+          "act": 5.5,
+          "text": " Study of the Fast-food Industry in New Jersey and Pennsylvania: Reply.�«�» American"
+        }
+      ]
+    },
+    {
+      "id": 20447,
+      "label": "Partial or fragmented words and tokens",
+      "confidence": "low",
+      "selection_reason": "high_frequency",
+      "freq": 0.0763788,
+      "examples": [
+        {
+          "act": 8.8,
+          "text": "Kinnon\\n\\nLine 2: Johnny G‹aud›reau Sean‹ Mon›ahan Jack‹ E›«ic»"
+        },
+        {
+          "act": 8.2,
+          "text": "\\nEvery year, Salesforce brings in influential speakers — including women like Patricia Ar«qu»"
+        },
+        {
+          "act": 8.1,
+          "text": "Spiffy_1\\n\\nOffline\\n\\n‹Activity›: 234\\n\\n«Merit»‹:›‹ 100›\\n\\n‹Full›‹ Member›‹Activity›:"
+        }
+      ]
+    },
+    {
+      "id": 2917,
+      "label": "Punctuation and special characters in structured text",
+      "confidence": "low",
+      "selection_reason": "high_frequency",
+      "freq": 0.0440373,
+      "examples": [
+        {
+          "act": 6.0,
+          "text": " incident on The Oprah Winfrey Show in 2005, in« which» Cruise repeatedly jumped on the couch next to Oprah, fell to"
+        },
+        {
+          "act": 4.8,
+          "text": " Hawthorne Stacy Hawthorne Photo: Vallejo Police Photo: Valle«jo» Police Image 1 of / 1 Caption Close"
+        },
+        {
+          "act": 4.8,
+          "text": ". This is nothing short of absolutely, positively delicious! I am pretty« certain» that my favorite Potaje de Garban"
+        }
+      ]
+    },
+    {
+      "id": 19444,
+      "label": "Structural markers and formatting delimiters",
+      "confidence": "low",
+      "selection_reason": "high_frequency",
+      "freq": 0.0424369,
+      "examples": [
+        {
+          "act": 6.5,
+          "text": " did some tests.\\n\\nTest 1:‹ Pour›‹ 4› cuts‹ of›‹ water›‹ into›‹ the›« bag»‹.›\\n"
+        },
+        {
+          "act": 6.5,
+          "text": "\\n\\nnamespace test\\n\\n{\\n\\nint« min»(int‹ x›, int‹ y›);\\n\\nclass X {"
+        },
+        {
+          "act": 5.9,
+          "text": "�s been said about it so far:\\n\\n��Int‹ense›‹ and›« atmospheric»‹…›INDOCTRIN‹ATION›"
+        }
+      ]
+    },
+    {
+      "id": 585,
+      "label": "Closing punctuation and citation/reference markers",
+      "confidence": "low",
+      "selection_reason": "high_frequency",
+      "freq": 0.0355518,
+      "examples": [
+        {
+          "act": 5.6,
+          "text": "wa Material conditional �� → �� {\\displaystyle« \\»‹var›‹phi›‹ \\›to \\psi } C �� �"
+        },
+        {
+          "act": 5.5,
+          "text": " Material conditional �� → �� {\\displaystyle‹ \\›«var»‹phi›‹ \\›to \\psi } C �� ��"
+        },
+        {
+          "act": 5.1,
+          "text": " 13 Bryan Coquard (Fra) Team Europ«car» 0:11:26 14 Jay McCarthy (Aus)"
+        }
+      ]
+    },
+    {
+      "id": 9787,
+      "label": "Prepositions and function words in clauses",
+      "confidence": "low",
+      "selection_reason": "high_frequency",
+      "freq": 0.0415319,
+      "examples": [
+        {
+          "act": 7.6,
+          "text": "��\\n\\nSánchez was‹ later› asked« by»‹ Sky› Sports‹ about›‹ the› chances of him staying at Arsenal. �"
+        },
+        {
+          "act": 6.6,
+          "text": "\\n‹This› shouldn��t be surprising‹.›‹ After›‹ all›«,» does‹ the› economy feel as if it��s on the"
+        },
+        {
+          "act": 6.4,
+          "text": " York Times newsletters.\\n\\n‹A› number‹ of›‹ the›‹ kids›« have»‹ missed› days‹ at›‹ school›‹ to› show up for court‹ dates›‹ at› which"
+        }
+      ]
+    }
+  ],
+  "labels": {
+    "18": {
+      "label": "Closing bracket or end of citation/reference",
+      "confidence": "high"
+    },
+    "41": {
+      "label": "Forward slash separators in lists and ratios",
+      "confidence": "high"
+    },
+    "44": {
+      "label": "Adverbial or temporal modifiers in comparative/contrastive contexts",
+      "confidence": "low"
+    },
+    "47": {
+      "label": "Closing quotation marks and punctuation",
+      "confidence": "high"
+    },
+    "87": {
+      "label": "Image caption or photo credit markers",
+      "confidence": "high"
+    },
+    "99": {
+      "label": "Innovation and emerging technology contexts",
+      "confidence": "medium"
+    },
+    "130": {
+      "label": "Narrative action verbs and adverbs in fiction",
+      "confidence": "medium"
+    },
+    "195": {
+      "label": "Closing quotation marks and end-of-statement punctuation",
+      "confidence": "high"
+    },
+    "224": {
+      "label": "Indefinite article 'a' in various contexts",
+      "confidence": "medium"
+    },
+    "225": {
+      "label": "Movie plot summary or film review text",
+      "confidence": "medium"
+    },
+    "372": {
+      "label": "Quotation marks and punctuation in citations",
+      "confidence": "low"
+    },
+    "396": {
+      "label": "Patronymic and surname suffixes in names",
+      "confidence": "high"
+    },
+    "436": {
+      "label": "Image captions and embedded media labels",
+      "confidence": "high"
+    },
+    "550": {
+      "label": "Positive sentiment or hopeful future-oriented statements",
+      "confidence": "medium"
+    },
+    "561": {
+      "label": "Proper nouns and organization names",
+      "confidence": "high"
+    },
+    "585": {
+      "label": "Closing punctuation and citation/reference markers",
+      "confidence": "low"
+    },
+    "642": {
+      "label": "Surname tokens before speech attribution verbs",
+      "confidence": "high"
+    },
+    "673": {
+      "label": "Discourse markers and hedging language",
+      "confidence": "low"
+    },
+    "739": {
+      "label": "Tokens following structural breaks or formatting artifacts",
+      "confidence": "low"
+    },
+    "781": {
+      "label": "City/location names in news datelines",
+      "confidence": "high"
+    },
+    "856": {
+      "label": "Commas and punctuation in list/enumeration contexts",
+      "confidence": "medium"
+    },
+    "880": {
+      "label": "Punctuation and formatting in citations/references",
+      "confidence": "medium"
+    },
+    "883": {
+      "label": "Numbers in parentheses or brackets in lists",
+      "confidence": "medium"
+    },
+    "901": {
+      "label": "Embarcadero company name or product branding",
+      "confidence": "high"
+    },
+    "902": {
+      "label": "Pinterest social media sharing button",
+      "confidence": "high"
+    },
+    "947": {
+      "label": "Punctuation and conjunctions marking clause/sentence boundaries",
+      "confidence": "low"
+    },
+    "952": {
+      "label": "Narrative scene-setting or descriptive passage openings",
+      "confidence": "medium"
+    },
+    "1008": {
+      "label": "Transition words and discourse markers",
+      "confidence": "medium"
+    },
+    "1070": {
+      "label": "Commas and punctuation in function signatures",
+      "confidence": "low"
+    },
+    "1129": {
+      "label": "Past tense or completed action verbs",
+      "confidence": "medium"
+    },
+    "1165": {
+      "label": "Non-Latin script characters and multilingual text",
+      "confidence": "high"
+    },
+    "1238": {
+      "label": "Punctuation and closing delimiters in text",
+      "confidence": "medium"
+    },
+    "1259": {
+      "label": "Closing punctuation and parentheses in lists",
+      "confidence": "medium"
+    },
+    "1528": {
+      "label": "Numerical values and decimal points in data",
+      "confidence": "low"
+    },
+    "1632": {
+      "label": "Day numbers in dates (ordinal numerals)",
+      "confidence": "high"
+    },
+    "1783": {
+      "label": "Media player UI and video metadata labels",
+      "confidence": "high"
+    },
+    "1974": {
+      "label": "Closing punctuation and bracket patterns",
+      "confidence": "medium"
+    },
+    "2216": {
+      "label": "Commas and conjunctions in clause boundaries",
+      "confidence": "medium"
+    },
+    "2238": {
+      "label": "Phone number digits in contact information",
+      "confidence": "high"
+    },
+    "2240": {
+      "label": "Discourse connectives and transitional words",
+      "confidence": "medium"
+    },
+    "2247": {
+      "label": "Proper nouns and named entities",
+      "confidence": "medium"
+    },
+    "2279": {
+      "label": "Nouns preceded by prepositions or articles",
+      "confidence": "low"
+    },
+    "2321": {
+      "label": "Video content labels and media section headers",
+      "confidence": "high"
+    },
+    "2481": {
+      "label": "Closing punctuation and bracket patterns",
+      "confidence": "medium"
+    },
+    "2505": {
+      "label": "Image caption and media UI elements",
+      "confidence": "high"
+    },
+    "2561": {
+      "label": "Sentence or clause beginning after punctuation",
+      "confidence": "medium"
+    },
+    "2778": {
+      "label": "Historical document citations and dating",
+      "confidence": "medium"
+    },
+    "2800": {
+      "label": "Rare or unusual word tokens",
+      "confidence": "low"
+    },
+    "2917": {
+      "label": "Punctuation and special characters in structured text",
+      "confidence": "low"
+    },
+    "3022": {
+      "label": "Pastebin guest user metadata and formatting",
+      "confidence": "high"
+    },
+    "3071": {
+      "label": "Accusatory or critical statements about wrongdoing",
+      "confidence": "high"
+    },
+    "3099": {
+      "label": "College sports team names in rankings/tables",
+      "confidence": "high"
+    },
+    "3127": {
+      "label": "Image caption and toggle UI elements in articles",
+      "confidence": "high"
+    },
+    "3136": {
+      "label": "Partial word tokens or morpheme fragments",
+      "confidence": "low"
+    },
+    "3194": {
+      "label": "Template angle brackets and generic type syntax",
+      "confidence": "high"
+    },
+    "3341": {
+      "label": "Nouns and common words in factual/encyclopedic text",
+      "confidence": "low"
+    },
+    "3362": {
+      "label": "Closing punctuation and sentence-final markers",
+      "confidence": "low"
+    },
+    "3414": {
+      "label": "Surnames in attribution contexts",
+      "confidence": "high"
+    },
+    "3458": {
+      "label": "Sports score final digit or hyphenated score separator",
+      "confidence": "high"
+    },
+    "3464": {
+      "label": "Plural nouns and quantitative measurements",
+      "confidence": "low"
+    },
+    "3613": {
+      "label": "Closing quotation marks and punctuation",
+      "confidence": "high"
+    },
+    "3703": {
+      "label": "Possessive 's followed by adjective or descriptor",
+      "confidence": "high"
+    },
+    "3775": {
+      "label": "Adjectives describing scope or significance",
+      "confidence": "medium"
+    },
+    "3805": {
+      "label": "Positive action verbs with beneficial outcomes",
+      "confidence": "high"
+    },
+    "3815": {
+      "label": "Follow social media call-to-action pattern",
+      "confidence": "high"
+    },
+    "3841": {
+      "label": "Rare or non-ASCII characters and tokens",
+      "confidence": "low"
+    },
+    "3851": {
+      "label": "Versus/matchup comparisons in sports",
+      "confidence": "high"
+    },
+    "3892": {
+      "label": "Comma punctuation following adjectives or adverbs",
+      "confidence": "high"
+    },
+    "3928": {
+      "label": "Proper nouns and named entities in news text",
+      "confidence": "medium"
+    },
+    "4067": {
+      "label": "Twitter URL shortener alphanumeric codes",
+      "confidence": "high"
+    },
+    "4079": {
+      "label": "Historical narrative and colonial/political context",
+      "confidence": "medium"
+    },
+    "4139": {
+      "label": "Email registration and account signup flow",
+      "confidence": "high"
+    },
+    "4185": {
+      "label": "Large numbers in statistical/numerical contexts",
+      "confidence": "high"
+    },
+    "4228": {
+      "label": "Metadata field labels and profile attributes",
+      "confidence": "high"
+    },
+    "4375": {
+      "label": "Tesla company name and related electric vehicle terms",
+      "confidence": "medium"
+    },
+    "4403": {
+      "label": "Story highlights section header or divider",
+      "confidence": "high"
+    },
+    "4447": {
+      "label": "Philosophical or abstract discourse markers",
+      "confidence": "medium"
+    },
+    "4553": {
+      "label": "Separator lines and structural delimiters",
+      "confidence": "medium"
+    },
+    "4575": {
+      "label": "Comparative or contrastive discourse markers",
+      "confidence": "low"
+    },
+    "4615": {
+      "label": "Plural nouns and noun phrases",
+      "confidence": "high"
+    },
+    "4694": {
+      "label": "Nouns in abstract/technical contexts",
+      "confidence": "low"
+    },
+    "4715": {
+      "label": "Language names in multilingual lists",
+      "confidence": "high"
+    },
+    "4736": {
+      "label": "Plural nouns or collective entities",
+      "confidence": "medium"
+    },
+    "4760": {
+      "label": "Abbreviation periods and acronym formatting",
+      "confidence": "medium"
+    },
+    "4768": {
+      "label": "Formal/legal discourse markers and connectives",
+      "confidence": "medium"
+    },
+    "4821": {
+      "label": "Commas and punctuation in formal/academic text",
+      "confidence": "low"
+    },
+    "4832": {
+      "label": "Proper nouns and brand names in technical contexts",
+      "confidence": "medium"
+    },
+    "4883": {
+      "label": "Capitalized words in titles or proper nouns",
+      "confidence": "medium"
+    },
+    "4921": {
+      "label": "Noun phrases and object complements in clauses",
+      "confidence": "low"
+    },
+    "4992": {
+      "label": "Adverbs and prepositions in descriptive contexts",
+      "confidence": "low"
+    },
+    "4998": {
+      "label": "Year ranges and date spans in lists",
+      "confidence": "high"
+    },
+    "5064": {
+      "label": "Brand names and product titles with capitals",
+      "confidence": "medium"
+    },
+    "5267": {
+      "label": "Television network and streaming service names",
+      "confidence": "high"
+    },
+    "5313": {
+      "label": "Date numbers in news datelines",
+      "confidence": "high"
+    },
+    "5356": {
+      "label": "British English spelling variants (-ise/-ize endings)",
+      "confidence": "medium"
+    },
+    "5389": {
+      "label": "Age in parentheses after person names",
+      "confidence": "high"
+    },
+    "5402": {
+      "label": "Special characters and formatting markers",
+      "confidence": "low"
+    },
+    "5449": {
+      "label": "Transition phrases and discourse markers",
+      "confidence": "high"
+    },
+    "5451": {
+      "label": "First-person pronoun 'I' in past tense contexts",
+      "confidence": "high"
+    },
+    "5630": {
+      "label": "Capitalized proper nouns and acronyms",
+      "confidence": "high"
+    },
+    "5679": {
+      "label": "Punctuation and discourse markers in citations",
+      "confidence": "low"
+    },
+    "5710": {
+      "label": "Arabic and Persian script characters",
+      "confidence": "high"
+    },
+    "5783": {
+      "label": "Casual conversational tone markers",
+      "confidence": "medium"
+    },
+    "5805": {
+      "label": "Sports journalism article text and structure",
+      "confidence": "medium"
+    },
+    "5885": {
+      "label": "prepositions introducing quoted speech or attribution",
+      "confidence": "high"
+    },
+    "5944": {
+      "label": "YouTube URL video ID characters",
+      "confidence": "high"
+    },
+    "5955": {
+      "label": "Surnames following 'Mr' title in text",
+      "confidence": "high"
+    },
+    "5964": {
+      "label": "Repeated vowel or consonant elongation patterns",
+      "confidence": "high"
+    },
+    "6029": {
+      "label": "Year in parentheses or after descriptive phrase",
+      "confidence": "high"
+    },
+    "6030": {
+      "label": "Prepositions and conjunctions in formal text",
+      "confidence": "low"
+    },
+    "6045": {
+      "label": "paragraph breaks and section transitions",
+      "confidence": "low"
+    },
+    "6110": {
+      "label": "Year or date range start in biographical context",
+      "confidence": "high"
+    },
+    "6193": {
+      "label": "Hyphen or dash in compound expressions",
+      "confidence": "low"
+    },
+    "6365": {
+      "label": "Temporal frequency descriptors in newsletter headers",
+      "confidence": "high"
+    },
+    "6410": {
+      "label": "Temporal transition or retrospective narrative markers",
+      "confidence": "medium"
+    },
+    "6551": {
+      "label": "Article/Story continuation markers and separators",
+      "confidence": "high"
+    },
+    "6568": {
+      "label": "Adjectives and descriptive words in positive contexts",
+      "confidence": "low"
+    },
+    "6756": {
+      "label": "Adverbial or evaluative modifiers in clauses",
+      "confidence": "low"
+    },
+    "6841": {
+      "label": "Image caption or media toggle labels",
+      "confidence": "high"
+    },
+    "6863": {
+      "label": "Nouns in news/media contexts",
+      "confidence": "medium"
+    },
+    "6873": {
+      "label": "Closing parenthesis in nationality abbreviations",
+      "confidence": "high"
+    },
+    "7148": {
+      "label": "Closing delimiters and punctuation in structured text",
+      "confidence": "medium"
+    },
+    "7274": {
+      "label": "Punctuation and formatting transitions in code/text",
+      "confidence": "low"
+    },
+    "7276": {
+      "label": "Predicates and copulas in declarative statements",
+      "confidence": "low"
+    },
+    "7491": {
+      "label": "Punctuation and special characters",
+      "confidence": "low"
+    },
+    "7558": {
+      "label": "Non-Latin script characters and multilingual text",
+      "confidence": "high"
+    },
+    "7662": {
+      "label": "Metadata labels and structured data fields",
+      "confidence": "low"
+    },
+    "7678": {
+      "label": "Paragraph breaks and section transitions",
+      "confidence": "medium"
+    },
+    "7753": {
+      "label": "Hyphenated compound words and phrase connectors",
+      "confidence": "low"
+    },
+    "7776": {
+      "label": "Twitter handle usernames in social media citations",
+      "confidence": "high"
+    },
+    "8010": {
+      "label": "Numeric values and quantities in text",
+      "confidence": "medium"
+    },
+    "8024": {
+      "label": "Bullet points and list markers in text",
+      "confidence": "medium"
+    },
+    "8160": {
+      "label": "Prepositions and conjunctions in expository prose",
+      "confidence": "low"
+    },
+    "8189": {
+      "label": "Imperative or instructional verb forms",
+      "confidence": "medium"
+    },
+    "8229": {
+      "label": "CJK characters and East Asian text encoding",
+      "confidence": "high"
+    },
+    "8246": {
+      "label": "Prepositions and small function words",
+      "confidence": "low"
+    },
+    "8265": {
+      "label": "Time zone abbreviations and time stamps",
+      "confidence": "high"
+    },
+    "8322": {
+      "label": "Noun phrases with 'in the [adjective]' pattern",
+      "confidence": "high"
+    },
+    "8396": {
+      "label": "closing brackets and punctuation in code",
+      "confidence": "high"
+    },
+    "8397": {
+      "label": "Closing punctuation and structural delimiters",
+      "confidence": "low"
+    },
+    "8489": {
+      "label": "Past tense verbs and subject pronouns in narrative",
+      "confidence": "medium"
+    },
+    "8490": {
+      "label": "Proper nouns and brand names in comparisons",
+      "confidence": "medium"
+    },
+    "8511": {
+      "label": "Nouns denoting problems or negative states",
+      "confidence": "high"
+    },
+    "8531": {
+      "label": "Numeric quantities and measurements",
+      "confidence": "high"
+    },
+    "8546": {
+      "label": "Quotation attribution and source citations",
+      "confidence": "high"
+    },
+    "8550": {
+      "label": "Discourse markers and conversational transitions",
+      "confidence": "medium"
+    },
+    "8583": {
+      "label": "Disjunctive 'or' in binary choice constructions",
+      "confidence": "high"
+    },
+    "8588": {
+      "label": "Negation or critical dismissal of concepts",
+      "confidence": "medium"
+    },
+    "8590": {
+      "label": "Comparative constructions with 'than' or 'as'",
+      "confidence": "high"
+    },
+    "8599": {
+      "label": "BBC media player unsupported device message",
+      "confidence": "high"
+    },
+    "8617": {
+      "label": "Noun phrases describing systems or structures",
+      "confidence": "medium"
+    },
+    "8632": {
+      "label": "Closing delimiters and punctuation in mathematical/code contexts",
+      "confidence": "medium"
+    },
+    "8785": {
+      "label": "Possessive pronouns and contractions with apostrophes",
+      "confidence": "low"
+    },
+    "8793": {
+      "label": "Commas in lists and enumerations",
+      "confidence": "high"
+    },
+    "8863": {
+      "label": "Call-to-action and promotional content markers",
+      "confidence": "medium"
+    },
+    "8937": {
+      "label": "Adverbial conjunctions and discourse markers",
+      "confidence": "medium"
+    },
+    "8944": {
+      "label": "First-person pronouns in narrative contexts",
+      "confidence": "medium"
+    },
+    "8988": {
+      "label": "Photo credit attributions and photographer names",
+      "confidence": "high"
+    },
+    "8992": {
+      "label": "Closing parentheses and punctuation in lists",
+      "confidence": "medium"
+    },
+    "9025": {
+      "label": "UK parliamentary constituency names and locations",
+      "confidence": "high"
+    },
+    "9068": {
+      "label": "Prepositions and particles in relative clauses",
+      "confidence": "low"
+    },
+    "9127": {
+      "label": "Sports rankings and superlatives in NFL context",
+      "confidence": "high"
+    },
+    "9205": {
+      "label": "Wi-Fi abbreviation and wireless connectivity terminology",
+      "confidence": "high"
+    },
+    "9302": {
+      "label": "Political extremism and radical ideology markers",
+      "confidence": "high"
+    },
+    "9323": {
+      "label": "Casual discourse markers and colloquial speech",
+      "confidence": "medium"
+    },
+    "9338": {
+      "label": "Em-dash punctuation and surrounding context",
+      "confidence": "medium"
+    },
+    "9373": {
+      "label": "Format string placeholders and printf-style formatting",
+      "confidence": "medium"
+    },
+    "9399": {
+      "label": "Comma punctuation in lists and enumerations",
+      "confidence": "high"
+    },
+    "9556": {
+      "label": "Hyphenated compound phrases with 'and'",
+      "confidence": "high"
+    },
+    "9658": {
+      "label": "Comma punctuation and clause boundaries",
+      "confidence": "high"
+    },
+    "9736": {
+      "label": "Syllable 'iv' or 'ivi' in word fragments",
+      "confidence": "high"
+    },
+    "9761": {
+      "label": "Surname fragments or partial proper names",
+      "confidence": "medium"
+    },
+    "9769": {
+      "label": "Large monetary amounts in dollars or billions",
+      "confidence": "high"
+    },
+    "9774": {
+      "label": "Image copyright attribution tags in news text",
+      "confidence": "high"
+    },
+    "9787": {
+      "label": "Prepositions and function words in clauses",
+      "confidence": "low"
+    },
+    "9808": {
+      "label": "Closing parentheses in numerical/statistical data",
+      "confidence": "high"
+    },
+    "9830": {
+      "label": "Prepositions and articles in comparative/locative phrases",
+      "confidence": "low"
+    },
+    "9918": {
+      "label": "Conjunction 'and' in narrative/news contexts",
+      "confidence": "low"
+    },
+    "9964": {
+      "label": "Baseball batting average decimal numbers",
+      "confidence": "high"
+    },
+    "9965": {
+      "label": "Auxiliary verbs and copulas in affirmative statements",
+      "confidence": "medium"
+    },
+    "10063": {
+      "label": "Capitalized or emphasized words in technical/casual text",
+      "confidence": "low"
+    },
+    "10227": {
+      "label": "Chrome browser mentions and references",
+      "confidence": "high"
+    },
+    "10429": {
+      "label": "Comma punctuation and conjunctions in lists",
+      "confidence": "medium"
+    },
+    "10577": {
+      "label": "Parentheses and dashes in tabular/list formatting",
+      "confidence": "high"
+    },
+    "10737": {
+      "label": "CJK and Indic script characters in multilingual text",
+      "confidence": "high"
+    },
+    "10879": {
+      "label": "Blog/forum metadata and navigation elements",
+      "confidence": "medium"
+    },
+    "10945": {
+      "label": "Words starting with 'sn' or 'kn' digraph",
+      "confidence": "high"
+    },
+    "10987": {
+      "label": "Geographic or spatial location nouns",
+      "confidence": "medium"
+    },
+    "11068": {
+      "label": "Linux distribution names and package managers",
+      "confidence": "high"
+    },
+    "11072": {
+      "label": "Nouns in appositive or descriptive phrases",
+      "confidence": "medium"
+    },
+    "11094": {
+      "label": "First names of people in citations/attributions",
+      "confidence": "high"
+    },
+    "11189": {
+      "label": "Decimal point or period in numerical contexts",
+      "confidence": "high"
+    },
+    "11242": {
+      "label": "Transition words and discourse markers",
+      "confidence": "medium"
+    },
+    "11270": {
+      "label": "Philosophical discourse and abstract reasoning",
+      "confidence": "high"
+    },
+    "11277": {
+      "label": "Destruction, damage, or removal of physical objects",
+      "confidence": "high"
+    },
+    "11359": {
+      "label": "MUST token in emphatic or instructional contexts",
+      "confidence": "high"
+    },
+    "11417": {
+      "label": "Abbreviations and acronyms in text",
+      "confidence": "high"
+    },
+    "11533": {
+      "label": "Punctuation and structural delimiters in text",
+      "confidence": "medium"
+    },
+    "11677": {
+      "label": "Photo caption or image credit markers in articles",
+      "confidence": "high"
+    },
+    "11746": {
+      "label": "Partial word or truncated token boundaries",
+      "confidence": "low"
+    },
+    "11752": {
+      "label": "Public behavior violations and legal infractions",
+      "confidence": "high"
+    },
+    "11826": {
+      "label": "C++ template syntax and type declarations",
+      "confidence": "medium"
+    },
+    "11887": {
+      "label": "Temporal trends and statistical changes over time",
+      "confidence": "high"
+    },
+    "11909": {
+      "label": "Upper bound of numerical ranges",
+      "confidence": "high"
+    },
+    "12162": {
+      "label": "Proper nouns and names, especially surnames",
+      "confidence": "high"
+    },
+    "12191": {
+      "label": "Punctuation and conjunctions in biographical narrative",
+      "confidence": "low"
+    },
+    "12325": {
+      "label": "Plural nouns or noun phrases in lists",
+      "confidence": "medium"
+    },
+    "12423": {
+      "label": "Positive sentiment or evaluative adjectives",
+      "confidence": "medium"
+    },
+    "12536": {
+      "label": "Adjectives and descriptive predicates in text",
+      "confidence": "low"
+    },
+    "12565": {
+      "label": "Geographic locations and place names",
+      "confidence": "medium"
+    },
+    "12622": {
+      "label": "Phonetic transcription and pronunciation markers",
+      "confidence": "high"
+    },
+    "12628": {
+      "label": "Large monetary amounts in dollars or currency",
+      "confidence": "high"
+    },
+    "12650": {
+      "label": "Decimal point or period in numerical contexts",
+      "confidence": "medium"
+    },
+    "12743": {
+      "label": "Comma separators in lists and coordinates",
+      "confidence": "high"
+    },
+    "12755": {
+      "label": "Proper nouns and named entities in news",
+      "confidence": "medium"
+    },
+    "12829": {
+      "label": "Punctuation and formatting markers in structured text",
+      "confidence": "medium"
+    },
+    "12964": {
+      "label": "Social media sharing buttons and metrics",
+      "confidence": "high"
+    },
+    "12977": {
+      "label": "Punctuation and closing delimiters after text",
+      "confidence": "low"
+    },
+    "13062": {
+      "label": "Parenthetical or bracketed clarifications/asides",
+      "confidence": "low"
+    },
+    "13099": {
+      "label": "CJK character tokens in Japanese text",
+      "confidence": "high"
+    },
+    "13215": {
+      "label": "Legal citation and regulatory compliance language",
+      "confidence": "high"
+    },
+    "13238": {
+      "label": "Closing punctuation and structural delimiters",
+      "confidence": "medium"
+    },
+    "13262": {
+      "label": "Weather emergency news headlines and alerts",
+      "confidence": "high"
+    },
+    "13265": {
+      "label": "Government agency or research center names",
+      "confidence": "high"
+    },
+    "13299": {
+      "label": "Tumblr platform name or social media service mentions",
+      "confidence": "high"
+    },
+    "13481": {
+      "label": "Adverbial frequency/manner markers (usually, often, typically)",
+      "confidence": "high"
+    },
+    "13630": {
+      "label": "Proper nouns and names in controversial contexts",
+      "confidence": "low"
+    },
+    "13853": {
+      "label": "Proper nouns and named entities",
+      "confidence": "high"
+    },
+    "13877": {
+      "label": "Nouns in various semantic contexts",
+      "confidence": "low"
+    },
+    "13976": {
+      "label": "South Asian place names and demonyms",
+      "confidence": "high"
+    },
+    "14011": {
+      "label": "Proper nouns and named entities",
+      "confidence": "medium"
+    },
+    "14176": {
+      "label": "Transition words and discourse markers",
+      "confidence": "medium"
+    },
+    "14214": {
+      "label": "Legal charge descriptions and formal documentation",
+      "confidence": "medium"
+    },
+    "14215": {
+      "label": "Closing parenthesis with punctuation",
+      "confidence": "high"
+    },
+    "14287": {
+      "label": "Biographical narrative context and proper nouns",
+      "confidence": "low"
+    },
+    "14342": {
+      "label": "Noun phrases following 'of' in temporal/duration contexts",
+      "confidence": "high"
+    },
+    "14388": {
+      "label": "Adverbs and discourse connectors in narrative",
+      "confidence": "medium"
+    },
+    "14447": {
+      "label": "Comma-separated numbers in ranges or statistics",
+      "confidence": "high"
+    },
+    "14462": {
+      "label": "Punctuation and clause/phrase boundaries",
+      "confidence": "low"
+    },
+    "14498": {
+      "label": "Hyphenated compound adjectives or adjectival suffixes",
+      "confidence": "high"
+    },
+    "14522": {
+      "label": "Closing punctuation after parentheses or brackets",
+      "confidence": "high"
+    },
+    "14565": {
+      "label": "Image caption and gallery markup labels",
+      "confidence": "high"
+    },
+    "14615": {
+      "label": "Mathematical exposition transitions and connectors",
+      "confidence": "medium"
+    },
+    "14700": {
+      "label": "Nouns following 'besides/in addition to/beyond' phrases",
+      "confidence": "high"
+    },
+    "14759": {
+      "label": "Casual conversational tone markers",
+      "confidence": "medium"
+    },
+    "14806": {
+      "label": "Punctuation and grammatical boundary markers",
+      "confidence": "low"
+    },
+    "14875": {
+      "label": "Template closing brackets and type parameters",
+      "confidence": "medium"
+    },
+    "14880": {
+      "label": "Noun phrases with 'as' introducing role/function/category",
+      "confidence": "high"
+    },
+    "14888": {
+      "label": "Superlative adjectives after 'most'",
+      "confidence": "high"
+    },
+    "14899": {
+      "label": "Adjective-noun compound word boundaries",
+      "confidence": "medium"
+    },
+    "14904": {
+      "label": "Discourse connectives and transitional phrases",
+      "confidence": "medium"
+    },
+    "15075": {
+      "label": "Substring or token boundary markers in text",
+      "confidence": "low"
+    },
+    "15146": {
+      "label": "Closing punctuation and brackets in text",
+      "confidence": "medium"
+    },
+    "15188": {
+      "label": "Quoted or parenthetical clause endings",
+      "confidence": "low"
+    },
+    "15353": {
+      "label": "Colloquial or crude language contexts",
+      "confidence": "low"
+    },
+    "15355": {
+      "label": "Proper nouns and named entities in text",
+      "confidence": "medium"
+    },
+    "15363": {
+      "label": "Hyphenated compound adjectives and descriptors",
+      "confidence": "medium"
+    },
+    "15488": {
+      "label": "Twitter handle/username endings in citations",
+      "confidence": "high"
+    },
+    "15520": {
+      "label": "Period ending sentence or clause",
+      "confidence": "high"
+    },
+    "15522": {
+      "label": "Company name suffixes and brand identifiers",
+      "confidence": "high"
+    },
+    "15551": {
+      "label": "Newsletter signup prompts and email subscription calls-to-action",
+      "confidence": "high"
+    },
+    "15604": {
+      "label": "Negative assertion or dismissal patterns",
+      "confidence": "medium"
+    },
+    "15703": {
+      "label": "Twitter URL shortener domain (t.co)",
+      "confidence": "high"
+    },
+    "15739": {
+      "label": "Adverbial conjunctions and formal discourse markers",
+      "confidence": "medium"
+    },
+    "15780": {
+      "label": "Adverbs and evaluative adjectives in discourse",
+      "confidence": "medium"
+    },
+    "15792": {
+      "label": "Video player UI elements and media controls",
+      "confidence": "high"
+    },
+    "15884": {
+      "label": "Arabic/Muslim names, particularly Ahmad/Ahmed",
+      "confidence": "high"
+    },
+    "15901": {
+      "label": "Temporal markers and present-tense context phrases",
+      "confidence": "medium"
+    },
+    "15906": {
+      "label": "Alternative or substitution markers (or, instead, by)",
+      "confidence": "medium"
+    },
+    "16021": {
+      "label": "Wikipedia markup and edit section formatting",
+      "confidence": "high"
+    },
+    "16242": {
+      "label": "Contractions and auxiliary verbs in casual text",
+      "confidence": "low"
+    },
+    "16271": {
+      "label": "Prepositions and small function words",
+      "confidence": "low"
+    },
+    "16278": {
+      "label": "Diacritical marks and non-Latin script characters",
+      "confidence": "high"
+    },
+    "16336": {
+      "label": "Quoted speech or dialogue closing punctuation",
+      "confidence": "medium"
+    },
+    "16345": {
+      "label": "Phone number digits in contact information",
+      "confidence": "high"
+    },
+    "16359": {
+      "label": "Organization or entity names in quoted statements",
+      "confidence": "high"
+    },
+    "16387": {
+      "label": "Wikipedia markup and edit section brackets",
+      "confidence": "medium"
+    },
+    "16453": {
+      "label": "Adverbial or transitional discourse markers",
+      "confidence": "medium"
+    },
+    "16473": {
+      "label": "Prepositions and conjunctions in narrative contexts",
+      "confidence": "low"
+    },
+    "16587": {
+      "label": "Transition between sections or topic shifts",
+      "confidence": "medium"
+    },
+    "16595": {
+      "label": "Speculative/hedging language in scientific discourse",
+      "confidence": "medium"
+    },
+    "16656": {
+      "label": "Legal/formal proceedings and court contexts",
+      "confidence": "high"
+    },
+    "16883": {
+      "label": "Disclaimer and policy boilerplate text",
+      "confidence": "high"
+    },
+    "16929": {
+      "label": "Prepositions and discourse connectors in explanatory contexts",
+      "confidence": "low"
+    },
+    "16937": {
+      "label": "Gerund or present participle verb forms",
+      "confidence": "high"
+    },
+    "16948": {
+      "label": "Contrastive or comparative discourse markers",
+      "confidence": "low"
+    },
+    "16997": {
+      "label": "Transition words and discourse markers",
+      "confidence": "medium"
+    },
+    "17048": {
+      "label": "Period/full stop punctuation and sentence endings",
+      "confidence": "high"
+    },
+    "17079": {
+      "label": "Abstract noun phrases with 'of' (act/gesture/vote of X)",
+      "confidence": "high"
+    },
+    "17138": {
+      "label": "Conjunction 'and' or coordinating conjunctions",
+      "confidence": "low"
+    },
+    "17142": {
+      "label": "Nouns in lists separated by commas or conjunctions",
+      "confidence": "high"
+    },
+    "17262": {
+      "label": "Imperative or action verbs in prescriptive contexts",
+      "confidence": "medium"
+    },
+    "17271": {
+      "label": "Possessive pronouns and first-person perspective markers",
+      "confidence": "medium"
+    },
+    "17292": {
+      "label": "Hexadecimal strings and hash values",
+      "confidence": "high"
+    },
+    "17337": {
+      "label": "Non-ASCII characters and encoding artifacts",
+      "confidence": "medium"
+    },
+    "17414": {
+      "label": "Citation formatting and academic references",
+      "confidence": "medium"
+    },
+    "17636": {
+      "label": "Adjectives describing degree or intensity",
+      "confidence": "high"
+    },
+    "17667": {
+      "label": "CAPTCHA and bot verification prompts",
+      "confidence": "high"
+    },
+    "17669": {
+      "label": "Colloquial contractions and dialect markers",
+      "confidence": "high"
+    },
+    "17710": {
+      "label": "Breaking news and alert keywords",
+      "confidence": "high"
+    },
+    "17719": {
+      "label": "Prepositions and function words in clauses",
+      "confidence": "low"
+    },
+    "17765": {
+      "label": "Auxiliary verbs and discourse connectors in clauses",
+      "confidence": "low"
+    },
+    "17915": {
+      "label": "Superscript or exponent notation markers",
+      "confidence": "medium"
+    },
+    "18285": {
+      "label": "Closing punctuation and structural delimiters",
+      "confidence": "medium"
+    },
+    "18337": {
+      "label": "Criticism or condemnation of institutional/governmental failure",
+      "confidence": "high"
+    },
+    "18391": {
+      "label": "Ordinal numbers and ranking positions",
+      "confidence": "low"
+    },
+    "18452": {
+      "label": "Section headers and structural dividers in text",
+      "confidence": "medium"
+    },
+    "18486": {
+      "label": "Newline or paragraph break tokens",
+      "confidence": "high"
+    },
+    "18544": {
+      "label": "Prepositions and conjunctions in formal/academic text",
+      "confidence": "low"
+    },
+    "18563": {
+      "label": "Parenthetical or bracketed clarifications/asides",
+      "confidence": "medium"
+    },
+    "18575": {
+      "label": "Newsletter or email subscription section headers",
+      "confidence": "medium"
+    },
+    "18766": {
+      "label": "Media playback unsupported message in BBC articles",
+      "confidence": "high"
+    },
+    "19084": {
+      "label": "Digits in scientific notation or decimal numbers",
+      "confidence": "high"
+    },
+    "19094": {
+      "label": "Newline and paragraph break tokens",
+      "confidence": "medium"
+    },
+    "19273": {
+      "label": "Closing parenthesis in parenthetical phrases",
+      "confidence": "high"
+    },
+    "19284": {
+      "label": "Closing punctuation and parentheses patterns",
+      "confidence": "medium"
+    },
+    "19290": {
+      "label": "Introductory or explanatory section headers",
+      "confidence": "medium"
+    },
+    "19390": {
+      "label": "Closing parenthesis and abbreviations in citations",
+      "confidence": "high"
+    },
+    "19444": {
+      "label": "Structural markers and formatting delimiters",
+      "confidence": "low"
+    },
+    "19501": {
+      "label": "Items in comma-separated lists or enumerations",
+      "confidence": "high"
+    },
+    "19596": {
+      "label": "Geopolitical conspiracy and anti-American rhetoric",
+      "confidence": "high"
+    },
+    "19683": {
+      "label": "Numeric values and quantities in text",
+      "confidence": "low"
+    },
+    "19831": {
+      "label": "WATCH token in video URLs and captions",
+      "confidence": "high"
+    },
+    "19948": {
+      "label": "American historical events and dates",
+      "confidence": "high"
+    },
+    "19985": {
+      "label": "Age numbers in biographical contexts",
+      "confidence": "high"
+    },
+    "20106": {
+      "label": "URL shortener domain characters and codes",
+      "confidence": "high"
+    },
+    "20149": {
+      "label": "Punctuation and formatting markers in text",
+      "confidence": "low"
+    },
+    "20447": {
+      "label": "Partial or fragmented words and tokens",
+      "confidence": "low"
+    },
+    "20499": {
+      "label": "Nouns preceded by 'of the' or 'nature of'",
+      "confidence": "high"
+    },
+    "20601": {
+      "label": "Period/full stop punctuation and citation markers",
+      "confidence": "medium"
+    },
+    "20644": {
+      "label": "Indefinite or demonstrative articles and pronouns",
+      "confidence": "medium"
+    },
+    "20718": {
+      "label": "Punctuation and formatting markers in structured text",
+      "confidence": "low"
+    },
+    "20748": {
+      "label": "Contrastive or concessive conjunctions following clauses",
+      "confidence": "high"
+    },
+    "21070": {
+      "label": "Twitter URL alphanumeric suffix characters",
+      "confidence": "high"
+    },
+    "21108": {
+      "label": "temporal transition or sequence completion markers",
+      "confidence": "high"
+    },
+    "21334": {
+      "label": "Locations of violent crimes or incidents",
+      "confidence": "high"
+    },
+    "21374": {
+      "label": "NPR media organization references",
+      "confidence": "high"
+    },
+    "21490": {
+      "label": "Wikipedia article section headers and metadata",
+      "confidence": "medium"
+    },
+    "21508": {
+      "label": "Discourse connectives and transition markers",
+      "confidence": "high"
+    },
+    "21569": {
+      "label": "closing parentheses and bracket sequences",
+      "confidence": "high"
+    },
+    "21614": {
+      "label": "Collective action or gathering of people",
+      "confidence": "high"
+    },
+    "21836": {
+      "label": "Story continued/below article continuation markers",
+      "confidence": "high"
+    },
+    "21934": {
+      "label": "Commas and conjunctions in formal prose",
+      "confidence": "medium"
+    },
+    "21938": {
+      "label": "Prepositions and small function words in clauses",
+      "confidence": "low"
+    },
+    "22154": {
+      "label": "Period or sentence-ending punctuation in text",
+      "confidence": "high"
+    },
+    "22288": {
+      "label": "BBC media player unsupported device disclaimer",
+      "confidence": "high"
+    },
+    "22403": {
+      "label": "Negation or contradiction markers in discourse",
+      "confidence": "medium"
+    },
+    "22418": {
+      "label": "Coordinating conjunctions connecting independent clauses",
+      "confidence": "high"
+    },
+    "22454": {
+      "label": "Month names in chronological date sequences",
+      "confidence": "high"
+    },
+    "22533": {
+      "label": "Comparative or contrastive language patterns",
+      "confidence": "low"
+    },
+    "22564": {
+      "label": "Contrastive conjunctions and discourse markers",
+      "confidence": "medium"
+    },
+    "22588": {
+      "label": "Death toll numbers in violence/tragedy contexts",
+      "confidence": "high"
+    },
+    "22695": {
+      "label": "Assignment operators and equals signs",
+      "confidence": "medium"
+    },
+    "22852": {
+      "label": "Abbreviations and shortened word forms",
+      "confidence": "low"
+    },
+    "23092": {
+      "label": "Conjunctions and list separators in news text",
+      "confidence": "medium"
+    },
+    "23203": {
+      "label": "Discourse connectors and transitional phrases",
+      "confidence": "medium"
+    },
+    "23214": {
+      "label": "Prepositions and function words in varied contexts",
+      "confidence": "low"
+    },
+    "23288": {
+      "label": "Commas or punctuation in descriptive phrases",
+      "confidence": "low"
+    },
+    "23407": {
+      "label": "Verbs of action or speech in news narratives",
+      "confidence": "medium"
+    },
+    "23433": {
+      "label": "streaming media and digital distribution platforms",
+      "confidence": "high"
+    },
+    "23512": {
+      "label": "Hyphenated or compound adjective modifiers",
+      "confidence": "high"
+    },
+    "23540": {
+      "label": "Nouns following 'also' or discourse connectors",
+      "confidence": "medium"
+    },
+    "23570": {
+      "label": "Adverbial or adjectival suffix patterns",
+      "confidence": "low"
+    },
+    "23607": {
+      "label": "Adverbs and discourse markers in speech",
+      "confidence": "low"
+    },
+    "23619": {
+      "label": "Loading placeholder text in web content",
+      "confidence": "high"
+    },
+    "23624": {
+      "label": "Nouns in casual conversational contexts",
+      "confidence": "medium"
+    },
+    "23677": {
+      "label": "Closing punctuation and quotation marks",
+      "confidence": "high"
+    },
+    "23688": {
+      "label": "Archaic or poetic language markers",
+      "confidence": "high"
+    },
+    "23712": {
+      "label": "Closing punctuation and sentence-end markers",
+      "confidence": "medium"
+    },
+    "23713": {
+      "label": "Prepositions and articles in narrative/planning contexts",
+      "confidence": "low"
+    },
+    "23741": {
+      "label": "Business/economic development and strategic growth language",
+      "confidence": "medium"
+    },
+    "23743": {
+      "label": "Nouns in abstract/theoretical contexts",
+      "confidence": "medium"
+    },
+    "23762": {
+      "label": "Quoted speech or direct discourse markers",
+      "confidence": "medium"
+    },
+    "23835": {
+      "label": "Email addresses and contact information markers",
+      "confidence": "medium"
+    },
+    "23853": {
+      "label": "Adverbial intensifiers and emphatic modifiers",
+      "confidence": "medium"
+    },
+    "24015": {
+      "label": "Prepositions and discourse connectors in clauses",
+      "confidence": "low"
+    },
+    "24063": {
+      "label": "Country names in alphabetical lists",
+      "confidence": "high"
+    },
+    "24113": {
+      "label": "Numbers in citations, references, and data tables",
+      "confidence": "high"
+    },
+    "24199": {
+      "label": "Proper nouns with diacritics or non-standard spelling",
+      "confidence": "medium"
+    },
+    "24237": {
+      "label": "Surname followed by attribution verb (said/replied)",
+      "confidence": "high"
+    },
+    "24290": {
+      "label": "Political news headlines and article transitions",
+      "confidence": "medium"
+    },
+    "24315": {
+      "label": "Adverb or adjective ending in -ly or comparative/superlative forms",
+      "confidence": "low"
+    },
+    "24440": {
+      "label": "Proper nouns and named entities in text",
+      "confidence": "medium"
+    },
+    "24468": {
+      "label": "Question or statement sentence starters",
+      "confidence": "medium"
+    }
+  }
+}

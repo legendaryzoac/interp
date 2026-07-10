@@ -7,6 +7,8 @@ import AttentionView from './components/AttentionView'
 import LogitLensView from './components/LogitLensView'
 import CompareView from './components/CompareView'
 import CircuitsView from './components/CircuitsView'
+import SaeInspector from './components/SaeInspector'
+import SteeringPlayground from './components/SteeringPlayground'
 import SiteFooter from './components/SiteFooter'
 import {
   detectBackend,
@@ -19,7 +21,7 @@ import { tokenize } from './lib/tokenizer'
 import { viewFromRun, viewFromGallery, type ResultView } from './lib/viewModel'
 import { loadGallery, type Gallery } from './lib/gallery'
 
-type Tab = 'attention' | 'lens' | 'compare' | 'circuits'
+type Tab = 'attention' | 'lens' | 'compare' | 'circuits' | 'sae' | 'steering'
 type ModelState = 'idle' | 'loading' | 'ready' | 'error'
 
 const DEFAULT_PROMPT =
@@ -36,6 +38,9 @@ export default function App() {
   const [view, setView] = useState<ResultView | null>(null)
   const [tab, setTab] = useState<Tab>('attention')
   const [runMs, setRunMs] = useState<number | null>(null)
+  // Feature preselected for the Steering Playground when the user clicks
+  // "Steer with this feature" on an S8 feature page.
+  const [steerFeatureId, setSteerFeatureId] = useState<number | null>(null)
 
   const [gallery, setGallery] = useState<Gallery | null>(null)
 
@@ -105,6 +110,12 @@ export default function App() {
     [gallery],
   )
 
+  // Route an S8 "Steer with this feature" click to the Steering Playground.
+  const handleSteer = useCallback((id: number) => {
+    setSteerFeatureId(id)
+    setTab('steering')
+  }, [])
+
   const busy = running || modelState === 'loading'
   const currentTokens = view?.tokens ?? tokenize(prompt).map((t) => t.display)
 
@@ -122,15 +133,16 @@ export default function App() {
             GPT-2, opened up
           </h1>
           <p className="text-muted mt-2 max-w-2xl text-sm leading-relaxed sm:text-base">
-            GPT-2 is a small AI language model: give it some text and it predicts
-            the word that comes next — normally a black box. This
-            mechanistic-interpretability visualizer opens the box. The model runs
-            entirely in your browser, and each tab below reveals a different
-            piece of the machinery behind that guess: its{' '}
+            GPT-2 is a small language model: give it some text and it predicts
+            the word that comes next. Usually you only see that guess, not how it
+            was made. This tool runs GPT-2 in your browser and shows the parts
+            that produce it: its{' '}
             <span className="text-accent">attention patterns</span>, its{' '}
-            <span className="text-accent">logit lens</span>, and the internal{' '}
-            <span className="text-accent">circuits</span> it uses. No ML
-            background needed — every view has a plain-language guide.
+            <span className="text-accent">logit lens</span>, the internal{' '}
+            <span className="text-accent">circuits</span> it uses, and the sparse{' '}
+            <span className="text-accent">features</span> its state breaks into.
+            Each tab has a short guide, so you don&rsquo;t need an ML background
+            to follow along.
           </p>
         </header>
 
@@ -203,7 +215,11 @@ export default function App() {
         )}
 
         {/* Results */}
-        {(view || tab === 'compare' || tab === 'circuits') && (
+        {(view ||
+          tab === 'compare' ||
+          tab === 'circuits' ||
+          tab === 'sae' ||
+          tab === 'steering') && (
           <section className="mt-8">
             <div className="mb-4 flex flex-wrap items-center gap-2">
               <button
@@ -246,9 +262,31 @@ export default function App() {
               >
                 Circuits
               </button>
+              <button
+                onClick={() => setTab('sae')}
+                className={`font-display rounded-lg px-4 py-1.5 text-sm font-medium transition-colors ${
+                  tab === 'sae'
+                    ? 'bg-accent text-site'
+                    : 'border-line text-muted hover:text-fg border'
+                }`}
+              >
+                SAE features
+              </button>
+              <button
+                onClick={() => setTab('steering')}
+                className={`font-display rounded-lg px-4 py-1.5 text-sm font-medium transition-colors ${
+                  tab === 'steering'
+                    ? 'bg-accent text-site'
+                    : 'border-line text-muted hover:text-fg border'
+                }`}
+              >
+                Steering
+              </button>
               {view?.source === 'precomputed' &&
                 tab !== 'compare' &&
-                tab !== 'circuits' && (
+                tab !== 'circuits' &&
+                tab !== 'sae' &&
+                tab !== 'steering' && (
                 <span className="border-accent-dim text-accent ml-1 rounded-full border px-2 py-0.5 font-mono text-[0.62rem]">
                   precomputed
                 </span>
@@ -267,6 +305,22 @@ export default function App() {
                   getRunner={ensureRunner}
                   modelReady={modelState === 'ready'}
                 />
+              ) : tab === 'sae' ? (
+                <SaeInspector
+                  prompt={prompt}
+                  backend={backend}
+                  getRunner={ensureRunner}
+                  modelReady={modelState === 'ready'}
+                  onSteer={handleSteer}
+                />
+              ) : tab === 'steering' ? (
+                <SteeringPlayground
+                  prompt={prompt}
+                  backend={backend}
+                  getRunner={ensureRunner}
+                  modelReady={modelState === 'ready'}
+                  initialFeatureId={steerFeatureId}
+                />
               ) : !view ? (
                 <div className="text-muted py-6 text-center font-mono text-sm">
                   run a prompt to populate this view
@@ -283,6 +337,8 @@ export default function App() {
         {!view &&
           tab !== 'compare' &&
           tab !== 'circuits' &&
+          tab !== 'sae' &&
+          tab !== 'steering' &&
           modelState !== 'loading' && (
             <div className="text-muted mt-10 text-center font-mono text-sm">
               enter a prompt and hit Run to load the model and see its internals —
@@ -299,6 +355,13 @@ export default function App() {
                 className="text-accent underline decoration-dotted underline-offset-2 hover:no-underline"
               >
                 Circuits
+              </button>{' '}
+              /{' '}
+              <button
+                onClick={() => setTab('sae')}
+                className="text-accent underline decoration-dotted underline-offset-2 hover:no-underline"
+              >
+                SAE features
               </button>
             </div>
           )}

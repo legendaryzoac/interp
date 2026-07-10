@@ -25,20 +25,18 @@ export default function LogitLensView({ view }: { view: ResultView }) {
         id="lens"
         lead={
           <>
-            GPT-2 doesn&rsquo;t pick the next word in a single step — it refines
-            its guess layer by layer, 12 times, like a thought coming into focus.
-            The <span className="text-accent">logit lens</span> is a trick that
-            peeks in after each layer and asks: &ldquo;if you had to answer right
-            now, using only what you&rsquo;ve worked out so far, what word would
-            you choose?&rdquo; Read top to bottom, you can watch a guess start as
-            vague noise in the early layers and snap into a confident answer by
-            the last one.
+            GPT-2 doesn&rsquo;t pick the next word in one step; it refines its
+            guess across 12 layers. The{' '}
+            <span className="text-accent">logit lens</span> reads out that guess
+            after each layer: given only what the model has worked out so far,
+            what word would it pick? Reading top to bottom, the early layers are
+            usually vague and the guess tends to settle by the last one.
           </>
         }
         points={[
           {
             label: 'Rows',
-            text: "the model's layers — earliest at the top, the final answer at the bottom (outlined).",
+            text: "the model's layers, earliest at the top, the final answer at the bottom (outlined).",
           },
           {
             label: 'Columns',
@@ -46,7 +44,7 @@ export default function LogitLensView({ view }: { view: ResultView }) {
           },
           {
             label: 'Color',
-            text: 'how confident that guess is — deeper shading means higher probability. Hover any cell for its top-5 candidates.',
+            text: 'how confident that guess is: deeper shading means higher probability. Hover any cell for its top-5 candidates.',
           },
         ]}
       />

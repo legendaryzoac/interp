@@ -1,0 +1,23 @@
+# S2 (basis-verification gate) dependencies.
+#
+# Own venv on D: (C: is ~98% full). Mirror the model-pipeline uv pattern; do NOT
+# reuse or modify the parity venv (D:/dev/interp-venv).
+#
+#   export UV_CACHE_DIR=D:/dev/uv-cache UV_PYTHON_INSTALL_DIR=D:/dev/uv-python HF_HOME=D:/dev/hf-cache
+#   uv venv D:/dev/sae-venv --python 3.12
+#   uv pip install --python D:/dev/sae-venv/Scripts/python.exe -r requirements.txt
+#
+# torch resolves to the CPU wheel from PyPI on Windows (no CUDA needed — S2 is a
+# handful of forward passes over ~8 short prompts). sae-lens pulls transformer-lens
+# and transformers transitively. onnxruntime is only for the browser==HF loop check.
+#
+# S4 additionally needs: datasets.
+sae-lens
+onnxruntime
+numpy
+pytest
+# S3 (encoder ONNX export + fp16 conversion):
+onnx
+onnxconverter-common
+# S5 (Haiku auto-labeling via Amazon Bedrock `converse`; ambient AWS creds in us-east-1):
+boto3

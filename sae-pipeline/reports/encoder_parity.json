@@ -1,0 +1,31 @@
+{
+  "artifacts": "D:\\dev\\sae-artifacts\\L8",
+  "layer": 8,
+  "n_tokens": 348,
+  "max_abs_x": 3010.037353515625,
+  "max_abs_feat_ref": 501.96881103515625,
+  "formula_vs_encode_max_abs_diff": 0.0,
+  "l0_torch_ref": 58.172413793103445,
+  "sanity_onnx_fp32_vs_true": 0.00014171834521903293,
+  "sanity_torch_vs_true": 0.00015533655886201814,
+  "topk": 10,
+  "topk_overlap_gate": 0.99,
+  "fp32": {
+    "max_abs_diff": 0.0001220703125,
+    "norm_diff": 2.431830620079115e-07,
+    "max_rel_active": 7.188718882389367e-06,
+    "l0": 58.172413793103445,
+    "top10_overlap": 1.0,
+    "gate_norm": 0.0001,
+    "pass": true
+  },
+  "fp16": {
+    "max_abs_diff": 0.121002197265625,
+    "norm_diff": 0.00024105521021534226,
+    "max_rel_active": 0.005271208006888628,
+    "l0": 58.25,
+    "top10_overlap": 0.9933908045977011,
+    "gate_norm": 0.01,
+    "pass": true
+  }
+}

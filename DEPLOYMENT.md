@@ -244,7 +244,215 @@ Live demo: <https://interp.zackwithers.com> · Source:
 (Write that file to `D:/dev/interp-artifacts/onnx/README.md` first, or upload it
 from wherever you save it — the second `hf upload` arg is just its local path.)
 
-## 5. Deploys after that
+## 5. SAE Feature Explorer artifacts (Hugging Face **dataset**)
+
+The SAE Feature Explorer (interp M2) ships a second HF-hosted payload, separate
+from the model weights of §4: the **labeled SAE feature dashboards** plus the
+**layer-8 SAE encoder/decoder** for `gpt2-small-res-jb`. The browser (Epic C)
+fetches these at runtime from `VITE_SAE_BASE_URL` and versions its Cache API
+namespace on each manifest's `content_hash` — the same scheme as the model
+weights. This is a **one-time manual publish** done by you (not CI), from a
+terminal on this Windows machine.
+
+**Why a _dataset_ repo, not a model repo.** These are derived data (feature
+statistics, activation snippets, labels, exported weights for in-browser use),
+not a trained model, so a **dataset repo** is the right HF repo type. This
+changes the public URL: a dataset's raw files resolve at
+
+```
+https://huggingface.co/datasets/<user>/<repo>/resolve/main/<path>
+```
+
+— note the extra **`datasets/`** path segment versus the model-weights URL in
+§4.8 (`https://huggingface.co/<user>/<repo>/resolve/main/<path>`, no
+`datasets/`). Everything else — the `resolve/main/…` layout, the 302→CDN
+redirect, and CORS — behaves like §4.
+
+> **CORS (verified 2026-07-10).** A cross-origin `curl` (with
+> `Origin: https://interp.zackwithers.com`) against a public dataset's
+> `…/resolve/main/…` URL returns `access-control-allow-origin:
+> https://interp.zackwithers.com` on the 307/302 from `huggingface.co`, and the
+> file bytes come back from the Xet/LFS CDN (`us.aws.cdn.hf.co/xet-bridge-us/…`)
+> with `access-control-allow-origin: *` and `accept-ranges: bytes`. So
+> whole-file browser `fetch()` from interp.zackwithers.com is permitted — the
+> exact mechanism the §4 model weights already rely on. (Refs: HF Hub
+> [downloading datasets](https://huggingface.co/docs/hub/datasets-downloading);
+> the long-standing browser-hosting CORS request
+> [huggingface_hub#468](https://github.com/huggingface/huggingface_hub/issues/468).
+> The one documented gap is **preflighted HTTP _Range_** reads on the Xet bridge
+> ([datasets#7931](https://github.com/huggingface/datasets/issues/7931)) — used
+> by DuckDB-Wasm/parquet-wasm partial reads; the SAE app does plain full-file
+> GETs, so it is unaffected.) The only thing not verifiable before upload is the
+> live end-to-end fetch from the deployed app against **your** repo — confirm it
+> in step 5.7's smoke test, exactly as §4.9 does for the model weights.
+
+The local artifact tree to publish lives entirely on **D:** at
+`D:/dev/sae-artifacts/L8/`. Only these **10 files** ship (the `harvest/`
+checkpoint, `*.log`, and `labels_cache.json` are working files and are
+excluded by the upload command below):
+
+```
+L8/sae_enc.onnx                       75,599,167 B   (fp32 encoder graph)
+L8/sae_enc_fp16.onnx                  37,800,097 B   (fp16 encoder graph)
+L8/w_dec_fp16.bin                     37,748,736 B   (decoder [24576,768] fp16)
+L8/b_dec_fp32.bin                          3,072 B   (decoder bias, 768 fp32)
+L8/manifest.json                           1,737 B   (encoder/decoder manifest, content_hash=36b59552633dccb3)
+L8/dashboards/index.json               1,527,591 B   (all 24,576 features + labels on the 384 curated)
+L8/dashboards/features_0000.json       1,115,004 B   (256 curated dashboards)
+L8/dashboards/features_0001.json         562,018 B   (128 curated dashboards)
+L8/dashboards/curated_features.json       46,726 B   (curated ids + selection reasons)
+L8/dashboards/manifest.json                  319 B   (dashboards manifest, content_hash=8dd4f035f5826424)
+```
+
+Total upload ≈ **154.4 MB** (≈147 MiB): ~3.25 MB dashboards + ~151.15 MB
+encoder/decoder. On a typical home upstream that's roughly **2–8 minutes**
+wall-clock (upstream bandwidth is the limit); `hf upload` shows per-file
+progress and resumes on re-run, so a dropped connection is safe to retry.
+
+### 5.1 Reuse your HF account + write token
+
+Reuse the same Hugging Face account and **Write** access token from §4.1–4.2 —
+no new account or token is needed. If you did §4, you're already logged in
+(§4.4). The `<user>` below is your HF username from `hf auth whoami` (it **may
+differ** from the GitHub handle `legendaryzoac`; substitute your actual
+username in every command and URL).
+
+### 5.2 Verify the `hf` CLI in the SAE venv
+
+This project uses its own venv at `D:/dev/sae-venv` (not the model-pipeline's
+`D:/dev/interp-venv`). It already has `huggingface_hub` with the `hf` CLI:
+
+```powershell
+D:/dev/sae-venv/Scripts/hf.exe version
+D:/dev/sae-venv/Scripts/hf.exe auth whoami   # should print your HF username
+```
+
+If `auth whoami` says you're not logged in, run
+`D:/dev/sae-venv/Scripts/hf.exe auth login` and paste the §4.2 write token.
+
+### 5.3 Create the dataset repo
+
+Public (portfolio piece). Suggested id `legendaryzoac/interp-sae-gpt2-L8` —
+**replace `legendaryzoac` with your HF username** if it differs. The
+`--repo-type dataset` flag is what makes it a dataset repo (and puts
+`datasets/` in the resolve URL):
+
+```powershell
+D:/dev/sae-venv/Scripts/hf.exe repos create legendaryzoac/interp-sae-gpt2-L8 --repo-type dataset --exist-ok
+```
+
+Repos are public by default (`--private` would make it private); `--exist-ok`
+makes it safe to re-run.
+
+### 5.4 Re-stamp the dashboards `content_hash` (do this first, every time)
+
+The dashboards manifest's `content_hash` must reflect the current bytes. S5's
+labeling rewrote `index.json` + `features_000{0,1}.json`, so re-stamp before
+uploading (idempotent; safe to re-run):
+
+```powershell
+$env:HF_HOME="D:/dev/hf-cache"
+D:/dev/sae-venv/Scripts/python.exe C:/Users/Zack/ClaudeCode/interp/sae-pipeline/stamp_dashboards.py --artifacts D:/dev/sae-artifacts/L8
+```
+
+It writes `D:/dev/sae-artifacts/L8/dashboards/manifest.json`
+(`content_hash=8dd4f035f5826424` for the current files) and also re-verifies
+the encoder/decoder `manifest.json` (should still report
+`content_hash=36b59552633dccb3` — unchanged since S3).
+
+### 5.5 Upload the `L8/` tree (one command, exact layout preserved)
+
+`hf upload <repo_id> <local_path> <path_in_repo>` uploads a folder recursively
+and preserves structure. Uploading `D:/dev/sae-artifacts/L8` into repo path
+`L8` reproduces the `L8/dashboards/…` + `L8/*.onnx|*.bin|manifest.json` layout
+the app expects. The three `--exclude` globs drop the ~94 MB of working files
+(`harvest/` checkpoint + token cache, `*.log`, `labels_cache.json`) so only the
+10 files above ship:
+
+```powershell
+D:/dev/sae-venv/Scripts/hf.exe upload legendaryzoac/interp-sae-gpt2-L8 D:/dev/sae-artifacts/L8 L8 --repo-type dataset --exclude "harvest/*" --exclude "*.log" --exclude "labels_cache.json"
+```
+
+On success it prints a
+`https://huggingface.co/datasets/legendaryzoac/interp-sae-gpt2-L8/tree/main/L8`
+URL. (Verified locally: those exact excludes select precisely the 10 published
+files and skip all 6 working files.)
+
+### 5.6 Sanity-check one URL in a browser
+
+Open the dashboards manifest directly (substitute your username) — note the
+`datasets/` segment and the `L8/` prefix:
+
+```
+https://huggingface.co/datasets/legendaryzoac/interp-sae-gpt2-L8/resolve/main/L8/dashboards/manifest.json
+```
+
+You should get the JSON with `content_hash`, `d_sae: 24576`, `n_curated: 384`,
+and a `files` map. Then confirm a large blob resolves — pasting
+`…/resolve/main/L8/sae_enc_fp16.onnx` should start a binary download (it
+302-redirects to the HF CDN, which browser `fetch` follows automatically).
+
+### 5.7 Point Epic C at the repo (do NOT edit the workflow yet)
+
+The web app (Epic C) will read a base URL from a new build-time var
+**`VITE_SAE_BASE_URL`** — **no trailing slash, no variant/subpath segment**; the
+app appends `/dashboards/…`, `/sae_enc_fp16.onnx`, `/manifest.json`, etc.
+itself. It must point at the `L8` folder:
+
+```
+VITE_SAE_BASE_URL = https://huggingface.co/datasets/legendaryzoac/interp-sae-gpt2-L8/resolve/main/L8
+```
+
+This gets wired into `.github/workflows/deploy.yml` (next to
+`VITE_MODEL_BASE_URL`) **as part of Epic C**, once the web runner that consumes
+it exists — **do not add it to the workflow now**. For a local pre-deploy smoke
+test before then, put it in `web/.env` (Vite reads `VITE_`-prefixed vars there;
+local-only, don't commit) and run the app — a successful dashboards + encoder
+load confirms fetch, CORS, and the `content_hash` cache path end-to-end against
+your repo.
+
+### 5.8 (Recommended) Add a dataset card
+
+For portfolio polish, add a one-paragraph `README.md` dataset card so the repo
+page isn't blank. Write it to `D:/dev/sae-artifacts/L8/README.md`, then upload
+the single file to the repo root:
+
+```powershell
+D:/dev/sae-venv/Scripts/hf.exe upload legendaryzoac/interp-sae-gpt2-L8 D:/dev/sae-artifacts/L8/README.md README.md --repo-type dataset
+```
+
+Suggested content:
+
+```markdown
+# interp-sae-gpt2-L8
+
+Derived data for **in-browser mechanistic interpretability**: labeled
+sparse-autoencoder (SAE) feature dashboards plus the SAE encoder/decoder for
+**GPT-2 (small), layer-8 residual stream** (`hook_resid_pre`), SAE release
+`gpt2-small-res-jb` (Joseph Bloom). Contains, under `L8/`: `dashboards/` — an
+`index.json` over all 24,576 features and per-feature dashboards for 384 curated
+features (top activating snippets, activation histograms, logit-lens tokens, and
+auto-generated labels), each manifest carrying a `content_hash` for cache
+versioning; and the exported encoder (`sae_enc.onnx` fp32 + `sae_enc_fp16.onnx`)
+and raw decoder blobs (`w_dec_fp16.bin`, `b_dec_fp32.bin`) so a static web app
+can compute and steer features entirely client-side with onnxruntime-web. These
+are artifacts of an interpretability demo, not a general-purpose dataset.
+
+Live demo: <https://interp.zackwithers.com> · Source:
+<https://github.com/legendaryzoac/interp>
+```
+
+### 5.9 Re-publishing after a pipeline re-run
+
+If you re-run the offline pipeline (re-harvest, re-label, or re-export the
+encoder), **re-run 5.4 first** (re-stamp), then re-run the 5.5 upload — the same
+command overwrites changed files and skips unchanged blobs. Each manifest's
+`content_hash` flips only when its files actually change, which flips the
+browser's Cache API namespace, so returning users automatically refetch the
+changed payload and evict the stale cache — no manual cache-busting needed
+(these files aren't on CloudFront anyway).
+
+## 6. Deploys after that
 
 - **Web changes**: push to `main` → Actions builds `web/` and syncs `web/dist`
   to S3, then invalidates `/index.html`. Hashed assets under `/assets/*` are

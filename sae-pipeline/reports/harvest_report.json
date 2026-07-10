@@ -1,0 +1,368 @@
+{
+  "story": "S4",
+  "dataset": "Skylion007/openwebtext",
+  "layer": 8,
+  "device": "cpu",
+  "harvest_seconds": 2788.2,
+  "harvest_minutes": 46.47,
+  "tok_per_sec_incl_bos": 723.0,
+  "total_nonbos_tokens": 2000123,
+  "n_alive": 24571,
+  "n_dead": 5,
+  "pool_size": 24569,
+  "curated_count": 384,
+  "curated_reason_counts": {
+    "high_frequency": 200,
+    "diversity": 184
+  },
+  "thresholds": {
+    "min_acts": 24,
+    "min_freq": 1.1999262045384208e-05,
+    "max_freq": 0.2,
+    "min_max_act": 1.0,
+    "top_by_freq_count": 200,
+    "target": 400
+  },
+  "histogram_bins": 20,
+  "histogram_range": [
+    0.05,
+    512.0
+  ],
+  "topk_heap": 16,
+  "context_window": 16,
+  "n_dashboard_chunks": 2,
+  "total_dashboard_bytes": 3141909,
+  "total_dashboard_mb": 3.14,
+  "spot_check": [
+    {
+      "id": 130,
+      "freq": 0.00902,
+      "n_active": 18042,
+      "reason": "diversity_band7",
+      "top5": [
+        {
+          "act": 9.538,
+          "act_token": " take",
+          "snippet": " in claws, head bowed and face covered by hair, before I reached out to take her hands. Her head moved, resting so it lay sideways on Jessie\u2019"
+        },
+        {
+          "act": 9.515,
+          "act_token": " to",
+          "snippet": " of herself as Hornet\u2014watched from atop a nearby roof, trying desperately to come up with a new play\u2026but instead, thinking about what Mantis would"
+        },
+        {
+          "act": 9.446,
+          "act_token": " come",
+          "snippet": " herself as Hornet\u2014watched from atop a nearby roof, trying desperately to come up with a new play\u2026but instead, thinking about what Mantis would say"
+        },
+        {
+          "act": 9.035,
+          "act_token": " her",
+          "snippet": " when she dove feet-first for the ground, flexed her legs to soften her landing, and stood. She was less than fifty feet away. Everyone else nearby"
+        },
+        {
+          "act": 8.996,
+          "act_token": " barely",
+          "snippet": ". When he reached (subjective, Thomas oriented) up, he could just barely touch the phone. The screen was cracked, but there was no way of telling"
+        }
+      ]
+    },
+    {
+      "id": 585,
+      "freq": 0.03555,
+      "n_active": 71108,
+      "reason": "high_frequency",
+      "top5": [
+        {
+          "act": 5.567,
+          "act_token": " \\",
+          "snippet": "i } alternatywa Material conditional \u03c6 \u2192 \u03c8 {\\displaystyle \\varphi \\to \\psi } C \u03c6 \u03c8 {\\displaystyle"
+        },
+        {
+          "act": 5.511,
+          "act_token": "var",
+          "snippet": " } alternatywa Material conditional \u03c6 \u2192 \u03c8 {\\displaystyle \\varphi \\to \\psi } C \u03c6 \u03c8 {\\displaystyle \\"
+        },
+        {
+          "act": 5.12,
+          "act_token": "car",
+          "snippet": " Team Cult Energi 13 Bryan Coquard (Fra) Team Europcar 0:11:26 14 Jay McCarthy (Aus) Team Saxo-"
+        },
+        {
+          "act": 5.052,
+          "act_token": "car",
+          "snippet": "-CSF Inox 24 Damien Gaudin (Fra) Team Europcar 25 Arthur Vanoverberghe (Bel) Topsport Vlaanderen"
+        },
+        {
+          "act": 4.776,
+          "act_token": " court",
+          "snippet": "-4 defense here linebackers are more spread out as if they were on a basketball court.\\n\\nHis brother, Shaquill hasn't been surprised by his success"
+        }
+      ]
+    },
+    {
+      "id": 1070,
+      "freq": 0.02851,
+      "n_active": 57025,
+      "reason": "high_frequency",
+      "top5": [
+        {
+          "act": 5.458,
+          "act_token": " purposes",
+          "snippet": " of those who comment daily on religious extremism\u2014are, for all intents and purposes,"
+        },
+        {
+          "act": 5.394,
+          "act_token": " from",
+          "snippet": "Each Wednesday, I've been using the F/+ rankings and the win probabilities derived from them to peer into the"
+        },
+        {
+          "act": 5.296,
+          "act_token": " strikes",
+          "snippet": " damaged building as civil defence workers sift through debris looking for survivors following reported air strikes in Aleppo ("
+        },
+        {
+          "act": 4.993,
+          "act_token": " nothing",
+          "snippet": " of the kids have missed days at school to show up for court dates at which nothing of consequence happens. Asher Callender, a senior at Bushwick Community High"
+        },
+        {
+          "act": 4.919,
+          "act_token": " it",
+          "snippet": "ABRAMS: Patrick, were you literally thrown out of the house or is it basically that you felt that"
+        }
+      ]
+    },
+    {
+      "id": 3892,
+      "freq": 0.02279,
+      "n_active": 45577,
+      "reason": "high_frequency",
+      "top5": [
+        {
+          "act": 12.482,
+          "act_token": " commonplace",
+          "snippet": " respectable female writer of sentimental novels, poetry or didactic literature had become a cultural commonplace, there was a new backlash against the literary woman asserting her views in the more"
+        },
+        {
+          "act": 11.513,
+          "act_token": " soon",
+          "snippet": " reform.\u201d But with progress on an immigration bill in Congress looking unlikely anytime soon, for now it\u2019s more stick than"
+        },
+        {
+          "act": 11.477,
+          "act_token": " small",
+          "snippet": " in Corsicana, Texas. Though the scale of his work was usually rather small, he was inspired by these immense old spaces, loved, as much as anything"
+        },
+        {
+          "act": 11.403,
+          "act_token": " impressive",
+          "snippet": " across the population. And while Costa Rica\u2019s commitment to environmental sustainability is impressive, its Ecological Footprint isn\u2019t yet small enough to be completely"
+        },
+        {
+          "act": 10.943,
+          "act_token": " investigation",
+          "snippet": " mayor's thoughts are with the cyclist's family. As this is now under police investigation it would be inappropriate to say anything else.\"\\n\\nJohnson cycled into White"
+        }
+      ]
+    },
+    {
+      "id": 5710,
+      "freq": 0.0002245,
+      "n_active": 449,
+      "reason": "diversity_band2",
+      "top5": [
+        {
+          "act": 38.311,
+          "act_token": "\u0631",
+          "snippet": " - Dari \u0639\u064e\u0631\u064e\u0628\u064a\u0652 - Arabic \u0641\u0627\u0631\u0633\u06cc - Persian \u067e\u069a\u062a\u0648 - Pashto "
+        },
+        {
+          "act": 35.728,
+          "act_token": "\u0644",
+          "snippet": " search on \u2018Red Crescent Idlib\u2019 in Arabic: \u201c\u0627\u0644\u0647\u0644\u0627\u0644 \u0627\u0644\u0623\u062d\u0645\u0631\u0627\u062f\u0644\u0628\u200e\u200e\u201d"
+        },
+        {
+          "act": 35.582,
+          "act_token": "\u0646",
+          "snippet": "\ufffd\u2d59; Arabic: \u0645\u0639\u0637\u0648\u0628 \u0644\u0648\u0646\u0651\u0627\u0633\u200e (January 24, 1956 \u2013 June 25, 1998))"
+        },
+        {
+          "act": 35.095,
+          "act_token": "\u062f",
+          "snippet": ".\\n\\nFirst of all, the hotel (Arabic: \u0641\u0646\u062f\u0642 \u0643\u0627\u0631\u0644\u062a\u0648\u0646) is listed as a four"
+        },
+        {
+          "act": 34.744,
+          "act_token": "\u0631",
+          "snippet": ", the hotel (Arabic: \u0641\u0646\u062f\u0642 \u0643\u0627\u0631\u0644\u062a\u0648\u0646) is listed as a four"
+        }
+      ]
+    },
+    {
+      "id": 6568,
+      "freq": 0.02385,
+      "n_active": 47707,
+      "reason": "high_frequency",
+      "top5": [
+        {
+          "act": 4.349,
+          "act_token": " worked",
+          "snippet": " a can of Diet Coke and wearily drove downtown to the printing factory where I worked"
+        },
+        {
+          "act": 4.18,
+          "act_token": " pops",
+          "snippet": " responds to the command, \"Give me a love quote.\" Try it and out pops a card with a random famous quote"
+        },
+        {
+          "act": 4.106,
+          "act_token": " unusual",
+          "snippet": " get around this, the lab offers to send it hidden in a book: an unusual offer from a"
+        },
+        {
+          "act": 4.045,
+          "act_token": " provides",
+          "snippet": " whistleblower represents a major blow to US attempts to keep its negotiating demands confidential, and provides important information to"
+        },
+        {
+          "act": 4.026,
+          "act_token": " adviser",
+          "snippet": " the advice of a Silicon Valley executive whose book acknowledgments include thanks to her wealth adviser andOprah Winfrey?\\n\\n\u201cI don\u2019t think"
+        }
+      ]
+    },
+    {
+      "id": 11242,
+      "freq": 0.02335,
+      "n_active": 46700,
+      "reason": "high_frequency",
+      "top5": [
+        {
+          "act": 6.627,
+          "act_token": " see",
+          "snippet": " specific domain\u2010related content. (For discussion of this possibility relevant to openness, see"
+        },
+        {
+          "act": 6.07,
+          "act_token": " However",
+          "snippet": " and not to engage in a debate about the specific psychological mechanisms underlying those interactions. However, on a"
+        },
+        {
+          "act": 5.529,
+          "act_token": "\ufffd",
+          "snippet": " Study of the Fast-food Industry in New Jersey and Pennsylvania: Reply.\u201d American"
+        },
+        {
+          "act": 5.326,
+          "act_token": " When",
+          "snippet": " interior\u2014what Campbell calls \u201cthat feeling of total flatness.\u201d When they got"
+        },
+        {
+          "act": 5.232,
+          "act_token": " However",
+          "snippet": " higher in complexity (conservatives = \u2212.07, liberals = .00). However,"
+        }
+      ]
+    },
+    {
+      "id": 14498,
+      "freq": 0.003469,
+      "n_active": 6938,
+      "reason": "diversity_band5",
+      "top5": [
+        {
+          "act": 19.96,
+          "act_token": " snow",
+          "snippet": "<|endoftext|> on March 8, one of the sunny, snow-free days in early spring, and had no trouble finding the boot-t"
+        },
+        {
+          "act": 19.636,
+          "act_token": " sub",
+          "snippet": "<|endoftext|> support producers still making challenging, sub-low beats \u2013 was a top seller in Blackmarket Records, one of the"
+        },
+        {
+          "act": 18.499,
+          "act_token": " eyewitness",
+          "snippet": " in print, or so it seemed. Williams who was noted for her sympathetic, eyewitness Letters Written in France had just published a poem in praise of the storming of"
+        },
+        {
+          "act": 18.351,
+          "act_token": " winds",
+          "snippet": "<|endoftext|> the ELT -- a lifeless, windswept mound of rock that could serve as the starting point for finding life in"
+        },
+        {
+          "act": 17.966,
+          "act_token": " fiber",
+          "snippet": " mass-producible process.\\n\\nNow read: The first flexible, fiber-optic solar cell that can be woven into clothes\\n\\nResearch paper:"
+        }
+      ]
+    },
+    {
+      "id": 19084,
+      "freq": 0.001373,
+      "n_active": 2747,
+      "reason": "diversity_band4",
+      "top5": [
+        {
+          "act": 33.243,
+          "act_token": "43",
+          "snippet": "+00, 3.51454365e+00, -2.31743276e+00, 9.41614308e-01, -2"
+        },
+        {
+          "act": 33.083,
+          "act_token": "40",
+          "snippet": "e+06 4.75871679e+06 -7.68407951e+06 3.05267070e+05 3."
+        },
+        {
+          "act": 32.963,
+          "act_token": "77",
+          "snippet": ".54031239] [ 1898.61079121] [ 126.23776885] [ -223.4"
+        },
+        {
+          "act": 32.833,
+          "act_token": "78",
+          "snippet": "-01, -2.48582176e-01, 4.34780093e-02, -5.00165344e-03"
+        },
+        {
+          "act": 32.689,
+          "act_token": "28",
+          "snippet": "76021e+06 9.11611817e+06 7.37282635e+06 -9.03411488e+06 4."
+        }
+      ]
+    },
+    {
+      "id": 19444,
+      "freq": 0.04244,
+      "n_active": 84879,
+      "reason": "high_frequency",
+      "top5": [
+        {
+          "act": 6.544,
+          "act_token": " bag",
+          "snippet": " did some tests.\\n\\nTest 1: Pour 4 cuts of water into the bag.\\n"
+        },
+        {
+          "act": 6.454,
+          "act_token": " min",
+          "snippet": " to std::min.\\n\\nnamespace test\\n\\n{\\n\\nint min(int x, int y);\\n\\nclass X { };\\n\\n}"
+        },
+        {
+          "act": 5.853,
+          "act_token": " atmospheric",
+          "snippet": "\ufffds been said about it so far:\\n\\n\u201cIntense and atmospheric\u2026INDOCTRINATION"
+        },
+        {
+          "act": 5.577,
+          "act_token": " poles",
+          "snippet": " to state-space representation Parameters ---------- z, p : sequence Zeros and poles. k : float System gain. Returns ------- A"
+        },
+        {
+          "act": 5.574,
+          "act_token": "Contin",
+          "snippet": "I will start by defining a few key terms in my own style.\\n\\nContinuation\\n\\nWe"
+        }
+      ]
+    }
+  ]
+}

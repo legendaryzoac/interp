@@ -1,0 +1,193 @@
+{
+  "release": "gpt2-small-res-jb",
+  "reference_raw_model": "transformer_lens from_pretrained_no_processing('gpt2') (== browser / ONNX)",
+  "reference_sae_basis_model": "transformer_lens from_pretrained('gpt2') (default processing)",
+  "transform": "x_sae = x_raw - mean(x_raw over d_model)   [center_writing_weights]",
+  "n_prompts": 22,
+  "layers": {
+    "6": {
+      "hook": "blocks.6.hook_resid_pre",
+      "cfg": {
+        "d_in": 768,
+        "d_sae": 24576,
+        "architecture": "StandardSAE",
+        "hook_name": "blocks.6.hook_resid_pre",
+        "hook_layer": null,
+        "normalize_activations": "none",
+        "apply_b_dec_to_input": true,
+        "prepend_bos": true,
+        "context_size": 128,
+        "model_name": "gpt2-small",
+        "dataset_path": "Skylion007/openwebtext",
+        "dtype": "float32",
+        "model_from_pretrained_kwargs": {
+          "center_writing_weights": true
+        }
+      },
+      "n_tokens": 348,
+      "onnx_vs_hf_max_abs_diff": 0.000732421875,
+      "transform_max_abs_diff": 0.000244140625,
+      "recon_correct_proc": {
+        "explained_variance": 0.9990667291808397,
+        "mse_sumd": 498.5352478027344,
+        "cosine_sim": 0.963552713394165,
+        "l0": 48.2442512512207,
+        "mean_resid_norm": 267.8682556152344
+      },
+      "recon_raw_untransformed": {
+        "explained_variance": -22305.67263838075,
+        "mse_sumd": 11937679360.0,
+        "cosine_sim": 0.8728764057159424,
+        "l0": 1575.689697265625,
+        "mean_resid_norm": 268.04827880859375
+      },
+      "recon_browser_transformed": {
+        "explained_variance": 0.9990667289624513,
+        "mse_sumd": 498.5352478027344,
+        "cosine_sim": 0.963552713394165,
+        "l0": 48.2442512512207,
+        "mean_resid_norm": 267.8683166503906
+      },
+      "ev_gain_from_transform": 22306.671705109715,
+      "browser_matches_correct": true
+    },
+    "7": {
+      "hook": "blocks.7.hook_resid_pre",
+      "cfg": {
+        "d_in": 768,
+        "d_sae": 24576,
+        "architecture": "StandardSAE",
+        "hook_name": "blocks.7.hook_resid_pre",
+        "hook_layer": null,
+        "normalize_activations": "none",
+        "apply_b_dec_to_input": true,
+        "prepend_bos": true,
+        "context_size": 128,
+        "model_name": "gpt2-small",
+        "dataset_path": "Skylion007/openwebtext",
+        "dtype": "float32",
+        "model_from_pretrained_kwargs": {
+          "center_writing_weights": true
+        }
+      },
+      "n_tokens": 348,
+      "onnx_vs_hf_max_abs_diff": 0.00048828125,
+      "transform_max_abs_diff": 0.000244140625,
+      "recon_correct_proc": {
+        "explained_variance": 0.9987612722987977,
+        "mse_sumd": 686.4949951171875,
+        "cosine_sim": 0.9592279195785522,
+        "l0": 53.64655303955078,
+        "mean_resid_norm": 280.4277038574219
+      },
+      "recon_raw_untransformed": {
+        "explained_variance": -14729.237354487706,
+        "mse_sumd": 8178292224.0,
+        "cosine_sim": 0.859597384929657,
+        "l0": 1579.9798583984375,
+        "mean_resid_norm": 280.6136169433594
+      },
+      "recon_browser_transformed": {
+        "explained_variance": 0.9987612721886645,
+        "mse_sumd": 686.4950561523438,
+        "cosine_sim": 0.9592279195785522,
+        "l0": 53.64655303955078,
+        "mean_resid_norm": 280.4277038574219
+      },
+      "ev_gain_from_transform": 14730.236115759895,
+      "browser_matches_correct": true
+    },
+    "8": {
+      "hook": "blocks.8.hook_resid_pre",
+      "cfg": {
+        "d_in": 768,
+        "d_sae": 24576,
+        "architecture": "StandardSAE",
+        "hook_name": "blocks.8.hook_resid_pre",
+        "hook_layer": null,
+        "normalize_activations": "none",
+        "apply_b_dec_to_input": true,
+        "prepend_bos": true,
+        "context_size": 128,
+        "model_name": "gpt2-small",
+        "dataset_path": "Skylion007/openwebtext",
+        "dtype": "float32",
+        "model_from_pretrained_kwargs": {
+          "center_writing_weights": true
+        }
+      },
+      "n_tokens": 348,
+      "onnx_vs_hf_max_abs_diff": 0.00048828125,
+      "transform_max_abs_diff": 0.00030517578125,
+      "recon_correct_proc": {
+        "explained_variance": 0.9983446491459387,
+        "mse_sumd": 937.391357421875,
+        "cosine_sim": 0.955950140953064,
+        "l0": 58.17241287231445,
+        "mean_resid_norm": 295.17718505859375
+      },
+      "recon_raw_untransformed": {
+        "explained_variance": -12104.661609125806,
+        "mse_sumd": 6867648512.0,
+        "cosine_sim": 0.8277698159217834,
+        "l0": 1819.735595703125,
+        "mean_resid_norm": 295.37054443359375
+      },
+      "recon_browser_transformed": {
+        "explained_variance": 0.9983446493194518,
+        "mse_sumd": 937.3910522460938,
+        "cosine_sim": 0.9559502601623535,
+        "l0": 58.17241287231445,
+        "mean_resid_norm": 295.17718505859375
+      },
+      "ev_gain_from_transform": 12105.659953775124,
+      "browser_matches_correct": true
+    },
+    "9": {
+      "hook": "blocks.9.hook_resid_pre",
+      "cfg": {
+        "d_in": 768,
+        "d_sae": 24576,
+        "architecture": "StandardSAE",
+        "hook_name": "blocks.9.hook_resid_pre",
+        "hook_layer": null,
+        "normalize_activations": "none",
+        "apply_b_dec_to_input": true,
+        "prepend_bos": true,
+        "context_size": 128,
+        "model_name": "gpt2-small",
+        "dataset_path": "Skylion007/openwebtext",
+        "dtype": "float32",
+        "model_from_pretrained_kwargs": {
+          "center_writing_weights": true
+        }
+      },
+      "n_tokens": 348,
+      "onnx_vs_hf_max_abs_diff": 0.00048828125,
+      "transform_max_abs_diff": 0.0003662109375,
+      "recon_correct_proc": {
+        "explained_variance": 0.9975921486488737,
+        "mse_sumd": 1380.0997314453125,
+        "cosine_sim": 0.9531237483024597,
+        "l0": 62.25,
+        "mean_resid_norm": 314.90472412109375
+      },
+      "recon_raw_untransformed": {
+        "explained_variance": -10903.370293533273,
+        "mse_sumd": 6261361664.0,
+        "cosine_sim": 0.8180526494979858,
+        "l0": 1936.0660400390625,
+        "mean_resid_norm": 315.1043395996094
+      },
+      "recon_browser_transformed": {
+        "explained_variance": 0.9975921488122642,
+        "mse_sumd": 1380.0994873046875,
+        "cosine_sim": 0.9531236886978149,
+        "l0": 62.25,
+        "mean_resid_norm": 314.9046936035156
+      },
+      "ev_gain_from_transform": 10904.367885682086,
+      "browser_matches_correct": true
+    }
+  }
+}
