@@ -4,6 +4,7 @@ import type { ResultView } from '../lib/viewModel'
 import MiniHeatmap from './MiniHeatmap'
 import ZoomedHeatmap from './ZoomedHeatmap'
 import ArcView from './ArcView'
+import Explainer from './Explainer'
 
 type Detail = 'heatmap' | 'arcs'
 
@@ -22,7 +23,39 @@ export default function AttentionView({ view }: { view: ResultView }) {
   const { patterns, seq, tokens } = view
 
   return (
-    <div className="flex flex-col gap-6 lg:flex-row">
+    <div className="flex flex-col gap-6">
+      <Explainer
+        id="attention"
+        lead={
+          <>
+            &ldquo;Attention&rdquo; is how the model works out which earlier
+            words matter for the word it&rsquo;s currently reading. As GPT-2 goes
+            through your text, each word looks back at the words before it and
+            pulls in information from the ones it finds relevant — that&rsquo;s
+            how it can tell, say, that &ldquo;it&rdquo; refers to a particular
+            noun mentioned earlier. GPT-2 does this with 144 separate attention{' '}
+            <span className="text-accent">heads</span> (12 layers × 12 heads),
+            and each head learns to look for a different kind of relationship.
+            The grid shows all 144 at once.
+          </>
+        }
+        points={[
+          {
+            label: 'Each mini-square',
+            text: 'one head. Brighter spots mean a word is paying more attention to an earlier word. Click any square to enlarge it.',
+          },
+          {
+            label: 'Zoomed heatmap',
+            text: 'each row is a word doing the looking; each column is an earlier word being looked at. A bright cell means the row-word is drawing heavily on the column-word.',
+          },
+          {
+            label: 'Arcs view',
+            text: 'the same information drawn as curves — a line links a word to an earlier word it attends to, thicker when the pull is stronger.',
+          },
+        ]}
+      />
+
+      <div className="flex flex-col gap-6 lg:flex-row">
       {/* Small-multiples grid */}
       <div className="shrink-0">
         <div className="text-muted mb-2 font-mono text-xs">
@@ -116,6 +149,7 @@ export default function AttentionView({ view }: { view: ResultView }) {
             tokens={tokens}
           />
         )}
+      </div>
       </div>
     </div>
   )

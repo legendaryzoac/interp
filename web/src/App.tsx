@@ -122,11 +122,15 @@ export default function App() {
             GPT-2, opened up
           </h1>
           <p className="text-muted mt-2 max-w-2xl text-sm leading-relaxed sm:text-base">
-            A mechanistic-interpretability visualizer. GPT-2 small runs entirely
-            in your browser via ONNX Runtime Web — this view exposes its{' '}
-            <span className="text-accent">attention patterns</span> and the{' '}
-            <span className="text-accent">logit lens</span> (what each layer
-            &ldquo;thinks&rdquo; the next token is).
+            GPT-2 is a small AI language model: give it some text and it predicts
+            the word that comes next — normally a black box. This
+            mechanistic-interpretability visualizer opens the box. The model runs
+            entirely in your browser, and each tab below reveals a different
+            piece of the machinery behind that guess: its{' '}
+            <span className="text-accent">attention patterns</span>, its{' '}
+            <span className="text-accent">logit lens</span>, and the internal{' '}
+            <span className="text-accent">circuits</span> it uses. No ML
+            background needed — every view has a plain-language guide.
           </p>
         </header>
 

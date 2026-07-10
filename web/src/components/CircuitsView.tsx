@@ -14,6 +14,7 @@ import {
 } from '../lib/circuits'
 import HeadScoreGrid from './HeadScoreGrid'
 import PatchingHeatmap from './PatchingHeatmap'
+import Explainer from './Explainer'
 
 type Sub = 'induction' | 'patching'
 
@@ -45,6 +46,28 @@ export default function CircuitsView({
 
   return (
     <div className="flex flex-col gap-5">
+      <Explainer
+        id="circuits"
+        lead={
+          <>
+            A <span className="text-accent">circuit</span> is a specific piece
+            of machinery inside the model that carries out one job — think of it
+            as a subroutine you could point to. These two probes hunt for known
+            circuits in GPT-2 and show them at work.
+          </>
+        }
+        points={[
+          {
+            label: 'Induction heads',
+            text: "GPT-2's copy-and-continue trick. Once it has seen a pattern like “… Mr Dursley … Mr”, it learns to repeat it and guess “Dursley” again. This probe feeds in a repeated random sequence and finds exactly which heads do that copying — GPT-2's well-known induction heads should light up, confirming the view matches published research.",
+          },
+          {
+            label: 'Activation patching',
+            text: 'a way to locate WHERE a fact lives inside the model. Take a sentence whose answer is "Mary" and a near-identical one whose answer is "John," then transplant one small internal piece from the "Mary" run into the "John" run, one spot at a time, and see which transplant flips the answer back to "Mary." The bright band pinpoints the exact spots carrying "who the gift is for."',
+          },
+        ]}
+      />
+
       <div className="text-muted font-mono text-xs leading-relaxed">
         Two circuit probes on GPT-2 small:{' '}
         <span className="text-accent">induction heads</span> (which heads copy a

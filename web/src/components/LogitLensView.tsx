@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { lensColor, lensTextColor } from '../lib/color'
 import type { ResultView } from '../lib/viewModel'
+import Explainer from './Explainer'
 
 /**
  * Logit-lens grid: rows = layers (0 at top → final at bottom), columns = token
@@ -20,6 +21,36 @@ export default function LogitLensView({ view }: { view: ResultView }) {
 
   return (
     <div className="flex flex-col gap-3">
+      <Explainer
+        id="lens"
+        lead={
+          <>
+            GPT-2 doesn&rsquo;t pick the next word in a single step — it refines
+            its guess layer by layer, 12 times, like a thought coming into focus.
+            The <span className="text-accent">logit lens</span> is a trick that
+            peeks in after each layer and asks: &ldquo;if you had to answer right
+            now, using only what you&rsquo;ve worked out so far, what word would
+            you choose?&rdquo; Read top to bottom, you can watch a guess start as
+            vague noise in the early layers and snap into a confident answer by
+            the last one.
+          </>
+        }
+        points={[
+          {
+            label: 'Rows',
+            text: "the model's layers — earliest at the top, the final answer at the bottom (outlined).",
+          },
+          {
+            label: 'Columns',
+            text: "positions in your text. Each cell is the model's best next-word guess at that layer and position.",
+          },
+          {
+            label: 'Color',
+            text: 'how confident that guess is — deeper shading means higher probability. Hover any cell for its top-5 candidates.',
+          },
+        ]}
+      />
+
       <div className="text-muted font-mono text-xs">
         each cell = top-1 predicted next-token · shaded by probability · hover
         for top-5 · <span className="text-warm">bottom row</span> = model's
