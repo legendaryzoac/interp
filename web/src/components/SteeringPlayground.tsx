@@ -12,7 +12,7 @@ import {
   type SteeringLoadProgress,
   type LabeledFeature,
 } from '../lib/steering'
-import { tokenize, decodeIds } from '../lib/tokenizer'
+import { tokenize, decodeIdsForDisplay } from '../lib/tokenizer'
 import Explainer from './Explainer'
 
 // Layer the SAE reads/writes (BASIS_CONTRACT: layer-8 resid_pre).
@@ -191,7 +191,9 @@ export default function SteeringPlayground({
           )
           if (i === 0 && !logitsAreFinite(logits))
             throw new Error('baseline logits are all NaN — bad EP numerics')
-          baseGen.push(sampleToken(logits, temperature, rngBase))
+          // Nucleus + repetition penalty use the sampler defaults; `generated`
+          // is this stream's own tokens so far (identical to steered at alpha=0).
+          baseGen.push(sampleToken(logits, temperature, rngBase, { generated: baseGen }))
           if (seqId !== genSeq.current) return
           setBaselineIds([...baseGen])
         }
@@ -213,7 +215,7 @@ export default function SteeringPlayground({
           )
           if (i === 0 && !logitsAreFinite(logits))
             throw new Error('steered logits are all NaN — check basis/alpha')
-          steerGen.push(sampleToken(logits, temperature, rngSteer))
+          steerGen.push(sampleToken(logits, temperature, rngSteer, { generated: steerGen }))
           if (seqId !== genSeq.current) return
           setSteeredIds([...steerGen])
         }
@@ -565,7 +567,7 @@ export default function SteeringPlayground({
             subtitle="untouched model"
             tone="base"
             promptText={localPrompt}
-            generatedText={decodeIds(baselineIds)}
+            generatedText={decodeIdsForDisplay(baselineIds)}
           />
           <CompletionColumn
             title="Steered"
@@ -576,7 +578,7 @@ export default function SteeringPlayground({
             }
             tone="steer"
             promptText={localPrompt}
-            generatedText={decodeIds(steeredIds)}
+            generatedText={decodeIdsForDisplay(steeredIds)}
           />
         </div>
       )}

@@ -124,22 +124,128 @@ export function logitsAreFinite(logits: Float32Array): boolean {
 }
 
 /**
+ * Nucleus (top-p) cutoff. Only the smallest set of highest-probability tokens
+ * whose cumulative mass reaches this fraction is eligible; the long tail — which
+ * for GPT-2 includes lone byte-fragment tokens that aren't valid standalone
+ * UTF-8 (they render as `�`) — is truncated away before sampling. 0.9 keeps the
+ * completions varied without ever reaching into the garbage tail.
+ */
+export const DEFAULT_TOP_P = 0.9
+
+/**
+ * CTRL-style repetition penalty. Each token already emitted in this sequence has
+ * its logit divided (if positive) or multiplied (if negative) by this factor
+ * before sampling, which knocks a token that's already appeared down the
+ * distribution and discourages the degenerate `… … …` / word-loop tails. 1.3 is
+ * strong enough to unstick most loops without visibly distorting normal prose.
+ */
+export const DEFAULT_REPETITION_PENALTY = 1.3
+
+/**
+ * no-repeat n-gram size. A hard guard that forbids the model from completing any
+ * n-gram it has already produced in this sequence: the tokens that would repeat
+ * an existing n-gram are masked out (logit → -Inf) before sampling. This is the
+ * definitive kill for a *runaway* loop — the CTRL penalty softly discourages
+ * repeats, this caps them. Size 3 lets natural short echoes through (a bigram may
+ * recur) but stops `… … … …` / `the the the the` dead. 0 disables.
+ */
+export const DEFAULT_NO_REPEAT_NGRAM = 3
+
+export interface SampleOptions {
+  /** Nucleus cutoff in (0,1]; ≥1 disables truncation. Default DEFAULT_TOP_P. */
+  topP?: number
+  /** CTRL penalty ≥1; 1 disables. Default DEFAULT_REPETITION_PENALTY. */
+  repetitionPenalty?: number
+  /** no-repeat n-gram size ≥2; 0 disables. Default DEFAULT_NO_REPEAT_NGRAM. */
+  noRepeatNgramSize?: number
+  /**
+   * Ids already generated in THIS sequence, used by the repetition penalty and
+   * the no-repeat n-gram guard. Both are pure functions of these ids, so passing
+   * the baseline's and the steered stream's own generated-so-far ids keeps
+   * alpha=0 identical to baseline (same ids ⇒ same masking ⇒ same draw under the
+   * shared seed).
+   */
+  generated?: readonly number[]
+}
+
+/**
  * Pick the next token from a logit row.
  *   temperature <= 0  → greedy argmax (deterministic; NaNs never win a `>`).
- *   temperature  > 0  → temperature-softmax sample using `rng()` in [0,1).
- * Numerically stable (subtract max before exp).
+ *   temperature  > 0  → nucleus (top-p) temperature-softmax sample using `rng()`.
+ *
+ * Sampler hygiene (S9-fix), applied to a copy so the caller's logits are never
+ * mutated:
+ *   • Repetition penalty divides/multiplies the logits of tokens in
+ *     `opts.generated`. Affects greedy too and stays deterministic there.
+ *   • no-repeat n-gram guard masks (→ -Inf) any token that would complete an
+ *     already-seen n-gram — the hard stop on runaway loops.
+ *   • Nucleus truncation restricts the temperature sample to the smallest set of
+ *     top tokens whose cumulative probability ≥ `topP`, renormalised within that
+ *     set. This removes GPT-2's invalid byte-fragment tail (the `�` source).
+ * Numerically stable (subtract max before exp). Determinism and the
+ * alpha=0 == baseline invariant are preserved: the sampler is a pure function of
+ * (logits, temperature, rng draws, opts), so baseline and steered — sharing a
+ * seed and, at alpha=0, identical logits and identical `generated` — draw the
+ * same ids every step.
  */
 export function sampleToken(
   logits: Float32Array,
   temperature: number,
   rng: () => number = Math.random,
+  opts: SampleOptions = {},
 ): number {
   const n = logits.length
-  // max for stability / argmax
+  const topP = opts.topP ?? DEFAULT_TOP_P
+  const penalty = opts.repetitionPenalty ?? DEFAULT_REPETITION_PENALTY
+  const ngram = opts.noRepeatNgramSize ?? DEFAULT_NO_REPEAT_NGRAM
+  const generated = opts.generated
+  const genLen = generated ? generated.length : 0
+
+  const wantPenalty = penalty !== 1 && genLen > 0
+  const wantNgram = ngram >= 2 && genLen >= ngram
+
+  // Work on a copy so the caller's logit buffer is untouched; skip the copy
+  // entirely when neither guard fires (the common early-step / all-off case).
+  let work = logits
+  if (wantPenalty || wantNgram) work = new Float32Array(logits)
+
+  // CTRL-style repetition penalty over already-generated ids (set-based).
+  if (wantPenalty) {
+    const seen = new Set(generated)
+    for (const id of seen) {
+      if (id < 0 || id >= n) continue
+      const x = work[id]
+      work[id] = x > 0 ? x / penalty : x * penalty
+    }
+  }
+
+  // no-repeat n-gram guard: mask any token that would repeat an n-gram already
+  // seen in `generated`. The candidate n-gram is (last n-1 tokens) + next token;
+  // for every earlier occurrence of that (n-1)-token prefix, ban the token that
+  // followed it. Pure in `generated`, so both streams mask identically at alpha 0.
+  if (wantNgram) {
+    const g = generated as readonly number[]
+    const start = genLen - (ngram - 1) // index of the current prefix
+    for (let i = 0; i + ngram <= genLen; i++) {
+      let prefixMatches = true
+      for (let j = 0; j < ngram - 1; j++) {
+        if (g[i + j] !== g[start + j]) {
+          prefixMatches = false
+          break
+        }
+      }
+      if (prefixMatches) {
+        const bannedId = g[i + ngram - 1]
+        if (bannedId >= 0 && bannedId < n) work[bannedId] = -Infinity
+      }
+    }
+  }
+
+  // max for stability / argmax (over the penalised logits)
   let max = -Infinity
   let argmax = 0
   for (let v = 0; v < n; v++) {
-    const x = logits[v]
+    const x = work[v]
     if (x > max) {
       max = x
       argmax = v
@@ -151,10 +257,40 @@ export function sampleToken(
   const probs = new Float64Array(n)
   let sum = 0
   for (let v = 0; v < n; v++) {
-    const e = Math.exp((logits[v] - max) / temperature)
+    const e = Math.exp((work[v] - max) / temperature)
     probs[v] = e
     sum += e
   }
+
+  // --- nucleus (top-p) truncation ---
+  // Order tokens by probability (descending) and keep the shortest prefix whose
+  // cumulative mass reaches topP*sum, then sample within that renormalised set.
+  // Stable sort ⇒ ties keep ascending index order, so an all-equal distribution
+  // maps rng→0 to the lowest index and rng→~1 to the highest (matches the
+  // untruncated behaviour on flat logits).
+  if (topP < 1) {
+    const idx = Array.from({ length: n }, (_, i) => i)
+    idx.sort((a, b) => probs[b] - probs[a])
+    const cutoff = topP * sum
+    let nucleusMass = 0
+    let k = 0
+    for (; k < n; k++) {
+      nucleusMass += probs[idx[k]]
+      if (nucleusMass >= cutoff) {
+        k++
+        break
+      }
+    }
+    const target = rng() * nucleusMass
+    let acc = 0
+    for (let j = 0; j < k; j++) {
+      acc += probs[idx[j]]
+      if (acc >= target) return idx[j]
+    }
+    return idx[k - 1] // numerical fallthrough → top of the nucleus
+  }
+
+  // topP >= 1: sample over the full (penalised) distribution.
   const target = rng() * sum
   let acc = 0
   for (let v = 0; v < n; v++) {

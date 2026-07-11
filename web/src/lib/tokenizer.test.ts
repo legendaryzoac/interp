@@ -11,7 +11,7 @@ import { describe, it, expect } from 'vitest'
 import { readFileSync, existsSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import path from 'node:path'
-import { encodeIds } from './tokenizer'
+import { encodeIds, decodeIds, decodeIdsForDisplay } from './tokenizer'
 
 const HERE = path.dirname(fileURLToPath(import.meta.url))
 const FIXTURE = path.resolve(
@@ -55,6 +55,38 @@ describe('gpt-tokenizer GPT-2 (r50k_base) golden cases', () => {
       expect(encodeIds(text)).toEqual(ids)
     })
   }
+})
+
+// decodeIdsForDisplay is the S9 belt-and-suspenders display guard: it strips a
+// trailing run of U+FFFD so a streamed completion never shows a dangling `�` from
+// a lone byte-fragment token that the next step would complete. Token id 94 is one
+// of GPT-2's lone lead-byte tokens (decode([94]) === '�').
+describe('decodeIdsForDisplay (trailing � guard)', () => {
+  const REPLACEMENT = '�'
+
+  it('confirms id 94 is a lone byte-fragment token', () => {
+    expect(decodeIds([94])).toBe(REPLACEMENT)
+  })
+
+  it('strips a trailing replacement char from an otherwise-clean stream', () => {
+    const prefix = encodeIds('Hello world')
+    const withPartial = [...prefix, 94]
+    expect(decodeIds(withPartial).endsWith(REPLACEMENT)).toBe(true) // raw shows it
+    const display = decodeIdsForDisplay(withPartial)
+    expect(display.endsWith(REPLACEMENT)).toBe(false)
+    expect(display).toBe(decodeIds(prefix)) // exactly the clean prefix
+  })
+
+  it('leaves clean text identical to decodeIds', () => {
+    const ids = encodeIds('The quick brown fox')
+    expect(decodeIdsForDisplay(ids)).toBe(decodeIds(ids))
+  })
+
+  it('does not strip an interior replacement char (only trailing)', () => {
+    // id 94 in the middle, real tokens after → interior � stays visible.
+    const ids = [...encodeIds('Hi'), 94, ...encodeIds(' there')]
+    expect(decodeIdsForDisplay(ids)).toContain(REPLACEMENT)
+  })
 })
 
 describe('gpt-tokenizer parity vs HF fixture', () => {

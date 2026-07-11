@@ -12,6 +12,9 @@ import {
   logitsAreFinite,
   mulberry32,
   D_MODEL,
+  DEFAULT_TOP_P,
+  DEFAULT_REPETITION_PENALTY,
+  DEFAULT_NO_REPEAT_NGRAM,
 } from './steering'
 
 // Encode a JS number as the raw 16 bits of its nearest fp16 (round-to-nearest),
@@ -160,6 +163,146 @@ describe('sampleToken', () => {
     const logits = new Float32Array([0, 0, 0])
     expect(sampleToken(logits, 1, () => 0)).toBe(0)
     expect(sampleToken(logits, 1, () => 0.999999)).toBe(2)
+  })
+})
+
+describe('sampleToken — nucleus (top-p) truncation', () => {
+  it('never samples a token outside the nucleus, even at rng→~1', () => {
+    // Two dominant tokens (~0.47 each) + a smaller tail token (~0.06). At temp 1
+    // the cumulative mass of {0,1} is ≈0.94 ≥ 0.9, so topP 0.9 excludes token 2 —
+    // it must be unreachable however high rng climbs.
+    const logits = new Float32Array([2, 2, 0])
+    for (const u of [0, 0.25, 0.5, 0.75, 0.999999]) {
+      expect(sampleToken(logits, 1, () => u, { topP: 0.9 })).not.toBe(2)
+    }
+    // The same tail token IS reachable when truncation is disabled (topP ≥ 1) —
+    // its ~0.06 mass is non-negligible — proving it's the nucleus doing the
+    // excluding, not the token simply having zero probability.
+    expect(sampleToken(logits, 1, () => 0.999999, { topP: 1 })).toBe(2)
+  })
+
+  it('keeps only the single top token when it already covers topP', () => {
+    // token 0 dominates (prob ≈ 1). Nucleus collapses to {0}; every draw picks it.
+    const logits = new Float32Array([20, 0, -1, -5])
+    for (const u of [0, 0.5, 0.999999]) {
+      expect(sampleToken(logits, 1, () => u, { topP: 0.9 })).toBe(0)
+    }
+  })
+
+  it('defaults to DEFAULT_TOP_P when topP is unspecified', () => {
+    expect(DEFAULT_TOP_P).toBeGreaterThan(0)
+    expect(DEFAULT_TOP_P).toBeLessThanOrEqual(1)
+    const logits = new Float32Array([2, 2, 0])
+    // With the default nucleus the ~0.06-mass tail token is still excluded.
+    expect(sampleToken(logits, 1, () => 0.999999)).not.toBe(2)
+  })
+})
+
+describe('sampleToken — repetition penalty', () => {
+  it('lowers a repeated token’s odds enough to flip the greedy pick', () => {
+    // token 0 leads by a hair; penalising it (it was already generated) hands the
+    // pick to token 1.
+    const logits = new Float32Array([5, 4.9])
+    expect(sampleToken(logits, 0)).toBe(0) // no penalty → argmax is 0
+    expect(
+      sampleToken(logits, 0, Math.random, { generated: [0], repetitionPenalty: 1.3 }),
+    ).toBe(1)
+  })
+
+  it('penalises negative logits by multiplying (pushes them further down)', () => {
+    // token 2 starts as the argmax at -1; once penalised (×1.3 → -1.3) token 1 wins.
+    const logits = new Float32Array([-5, -1.2, -1])
+    expect(sampleToken(logits, 0)).toBe(2)
+    expect(
+      sampleToken(logits, 0, Math.random, { generated: [2], repetitionPenalty: 1.3 }),
+    ).toBe(1)
+  })
+
+  it('does not mutate the caller’s logit buffer', () => {
+    const logits = new Float32Array([5, 4.9])
+    const before = Array.from(logits) // fp32-rounded snapshot
+    sampleToken(logits, 0, Math.random, { generated: [0], repetitionPenalty: 1.3 })
+    expect(Array.from(logits)).toEqual(before) // untouched
+  })
+
+  it('is a no-op when nothing has been generated yet', () => {
+    const logits = new Float32Array([5, 4.9])
+    expect(sampleToken(logits, 0, Math.random, { generated: [] })).toBe(0)
+  })
+
+  it('exposes a sane default penalty (>1 so repeats are discouraged)', () => {
+    expect(DEFAULT_REPETITION_PENALTY).toBeGreaterThan(1)
+  })
+})
+
+describe('sampleToken — no-repeat n-gram guard', () => {
+  it('masks the token that would complete an already-seen trigram (greedy)', () => {
+    // token 0 is the runaway argmax. Once "0 0" has appeared and we're at "…0 0",
+    // a third 0 would repeat the trigram (0,0,0) → it's banned, so 1 wins instead.
+    const logits = new Float32Array([10, 5, 1])
+    // no history → 0
+    expect(sampleToken(logits, 0, Math.random, { generated: [], noRepeatNgramSize: 3 })).toBe(0)
+    // "0 0" so far → completing (0,0,0) is allowed only if it never appeared; it
+    // hasn't yet at this point, so 0 is still fine.
+    expect(sampleToken(logits, 0, Math.random, { generated: [0, 0], noRepeatNgramSize: 3 })).toBe(0)
+    // "0 0 0" already exists; from "…0 0" another 0 would repeat trigram → banned.
+    expect(sampleToken(logits, 0, Math.random, { generated: [0, 0, 0], noRepeatNgramSize: 3 })).toBe(1)
+  })
+
+  it('caps a runaway to at most (size) consecutive copies', () => {
+    // Feed a fixed distribution that always favours token 0; the guard must break
+    // the run so no token id appears 4+ times in a row.
+    const logits = new Float32Array([10, 6, 3, 1])
+    const gen: number[] = []
+    const rng = mulberry32(99)
+    for (let i = 0; i < 20; i++) {
+      gen.push(sampleToken(logits, 0.3, rng, { generated: gen, noRepeatNgramSize: 3 }))
+    }
+    let maxRun = 1
+    let cur = 1
+    for (let i = 1; i < gen.length; i++) {
+      cur = gen[i] === gen[i - 1] ? cur + 1 : 1
+      if (cur > maxRun) maxRun = cur
+    }
+    expect(maxRun).toBeLessThanOrEqual(3) // size-3 guard ⇒ never 4 in a row
+  })
+
+  it('is disabled by size 0 (a runaway is then possible)', () => {
+    const logits = new Float32Array([10, 5, 1])
+    // With the guard off, greedy keeps returning the argmax regardless of history.
+    expect(
+      sampleToken(logits, 0, Math.random, { generated: [0, 0, 0], noRepeatNgramSize: 0 }),
+    ).toBe(0)
+  })
+
+  it('exposes a sane default n-gram size (≥2)', () => {
+    expect(DEFAULT_NO_REPEAT_NGRAM).toBeGreaterThanOrEqual(2)
+  })
+})
+
+describe('sampleToken — greedy determinism & alpha-0==baseline invariant', () => {
+  it('greedy stays deterministic with a repetition context', () => {
+    const logits = new Float32Array([1, 3, 2, 4, 0])
+    const a = sampleToken(logits, 0, Math.random, { generated: [3, 1] })
+    const b = sampleToken(logits, 0, Math.random, { generated: [3, 1] })
+    expect(a).toBe(b)
+  })
+
+  it('same seed + same logits + same generated ⇒ identical id streams', () => {
+    // Simulates baseline vs steered at alpha=0: identical logits every step,
+    // separate but same-seeded RNGs, each fed its own generated-so-far ids. The
+    // two streams must never diverge — that's the invariant the side-by-side view
+    // relies on.
+    const logits = new Float32Array([1, 3, 2, 0, 4, 1.5, 2.2])
+    const rngA = mulberry32(20260710)
+    const rngB = mulberry32(20260710)
+    const genA: number[] = []
+    const genB: number[] = []
+    for (let i = 0; i < 12; i++) {
+      genA.push(sampleToken(logits, 0.8, rngA, { generated: genA }))
+      genB.push(sampleToken(logits, 0.8, rngB, { generated: genB }))
+    }
+    expect(genA).toEqual(genB)
   })
 })
 

@@ -50,6 +50,21 @@ export function decodeIds(ids: number[]): string {
   return decode(ids)
 }
 
+/**
+ * Decode ids for LIVE display of a still-streaming completion. Identical to
+ * `decodeIds` except a trailing run of U+FFFD (`�`) is stripped.
+ *
+ * Why: GPT-2's byte-level BPE has tokens that are a single lead byte of a
+ * multi-byte UTF-8 sequence. If such a token lands last, decoding the array so
+ * far yields a dangling `�`; the continuation byte arrives on the next step and
+ * completes the character, so the `�` is transient. Stripping only the trailing
+ * run keeps the streamed text clean without hiding an interior `�` (which, after
+ * the S9 nucleus+repetition-penalty sampler fix, should never occur anyway).
+ */
+export function decodeIdsForDisplay(ids: number[]): string {
+  return decode(ids).replace(/�+$/, '')
+}
+
 /** Label for a single token id — used by views that only carry ids. */
 export function labelForId(id: number): string {
   return toDisplay(decode([id]))
