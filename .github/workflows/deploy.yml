@@ -28,6 +28,7 @@ jobs:
       - run: npm run build -w web
         env:
           VITE_MODEL_BASE_URL: https://huggingface.co/legendaryzoac/interp-gpt2-onnx/resolve/main
+          VITE_SAE_BASE_URL: https://huggingface.co/datasets/legendaryzoac/interp-sae-gpt2-L8/resolve/main/L8
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
